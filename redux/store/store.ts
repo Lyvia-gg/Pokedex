@@ -1,7 +1,13 @@
-import { applyMiddleware, configureStore, createStore, Store } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import reducer from '@/redux/reducers/pokemonReducer';
-import { thunk } from 'redux-thunk';
+// import { composeWithDevTools } from 'redux-devtools-extension'
 
-export const store: Store<PokemonState, PokemonAction> & {
-  dispatch: DispatchType;
-} = createStore(reducer, applyMiddleware(thunk));
+// export const store: Store<PokemonState, PokemonAction> & {
+//   dispatch: DispatchType;
+// } = createStore(reducer, applyMiddleware(thunk));
+
+export const store = configureStore({
+  reducer: reducer,
+  // DevTools sont activés par défaut en dev
+  devTools: process.env.NODE_ENV !== 'production',
+});
