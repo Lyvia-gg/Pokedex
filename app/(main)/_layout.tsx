@@ -12,12 +12,12 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
-  useEffect(() => {
-    const unlockScreenOerientation = async () => {
-      await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
-    };
-    unlockScreenOerientation();
-  }, []);
+  // useEffect(() => {
+  //   const unlockScreenOerientation = async () => {
+  //     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+  //   };
+  //   unlockScreenOerientation();
+  // }, []);
 
   return (
     <Tabs
