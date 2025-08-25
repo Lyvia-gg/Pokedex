@@ -8,15 +8,18 @@ import { Provider } from 'react-redux';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { store } from '@/redux/store/store';
 import * as ScreenOrientation from 'expo-screen-orientation';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { SessionProvider, useSession } from '@/context/AuthContext';
 import SplashScreenController from '@/app/splash';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Root() {
   return (
     <SessionProvider>
-      <SplashScreenController />
-      <RootNavigator />
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+        <SplashScreenController />
+        <RootNavigator />
+      </SafeAreaView>
     </SessionProvider>
   );
 }
@@ -35,7 +38,6 @@ function RootNavigator() {
   const { session } = useSession();
 
   return (
-    // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <Provider store={store}>
       <Stack>
         <Stack.Protected guard={!!session}>
@@ -44,10 +46,8 @@ function RootNavigator() {
         <Stack.Protected guard={!session}>
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         </Stack.Protected>
-
         <Stack.Screen name="+not-found" />
       </Stack>
     </Provider>
-    // </ThemeProvider>
   );
 }
