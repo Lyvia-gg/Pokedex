@@ -9,16 +9,20 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { store } from '@/redux/store/store';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect } from 'react';
+import { SessionProvider, useSession } from '@/context/AuthContext';
+import SplashScreenController from '@/app/splash';
 
-export default function RootLayout() {
+export default function Root() {
+  return (
+    <SessionProvider>
+      <SplashScreenController />
+      <RootNavigator />
+    </SessionProvider>
+  );
+}
+
+function RootNavigator() {
   const colorScheme = useColorScheme();
-
-  useEffect(() => {
-    const unlockScreenOerientation = async () => {
-      await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
-    };
-    unlockScreenOerientation();
-  }, []);
 
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -28,15 +32,21 @@ export default function RootLayout() {
     // Async font loading only occurs in development.
     return null;
   }
+  const { session } = useSession();
 
   return (
     // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <Provider store={store}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Protected guard={!!session}>
+          <Stack.Screen name="(main)" options={{ headerShown: false }} />
+        </Stack.Protected>
+        <Stack.Protected guard={!session}>
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        </Stack.Protected>
+
         <Stack.Screen name="+not-found" />
       </Stack>
-      <StatusBar style="auto" />
     </Provider>
     // </ThemeProvider>
   );
