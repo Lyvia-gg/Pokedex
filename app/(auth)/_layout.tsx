@@ -9,12 +9,12 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 export default function RootLayout() {
   const [isLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const unlockScreenOerientation = async () => {
-      await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
-    };
-    unlockScreenOerientation();
-  }, []);
+  // useEffect(() => {
+  //   const unlockScreenOerientation = async () => {
+  //     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+  //   };
+  //   unlockScreenOerientation();
+  // }, []);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <Stack
