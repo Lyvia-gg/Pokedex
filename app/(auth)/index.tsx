@@ -10,7 +10,7 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+// import { LinearGradient } from 'expo-linear-gradient';
 import { useSession } from '@/context/AuthContext';
 
 export default function Login() {

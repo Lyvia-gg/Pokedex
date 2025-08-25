@@ -1,53 +1,47 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useSession } from '@/context/AuthContext';
+import { Dispatch } from '@reduxjs/toolkit';
+import { useDispatch, useSelector, shallowEqual, ReactReduxContext } from 'react-redux';
+import { getPokedexByGeneration } from '@/redux/actions/pokemonAction';
+import React, { useContext, useEffect } from 'react';
+import { View } from 'react-native';
+import List from '@/components/PokemonList/List';
+
+// type Props = {
+//   fetchPokemon: (pokemons: IPokemon | any) => void
+// }
 
 export default function HomeScreen() {
   const { signOut } = useSession();
+  // const { PokemonState } = useSelector(state => state.pokemons);
+  const pokemons: readonly IPokemon[] = useSelector(
+    (state: PokemonState) => state.pokemons,
+    shallowEqual,
+  );
+
+  const dispatch: Dispatch<any> = useDispatch();
+
+  useEffect(() => {
+    dispatch(getPokedexByGeneration(5));
+    // console.log('dispatch (main)');
+    // console.log('state pokemon', pokemons);
+  }, []);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
+    // <ScrollView>
+    <ScrollView style={{ flex: 1, backgroundColor: 'red', display: 'flex' }}>
       <TouchableOpacity onPress={() => signOut()} style={[styles.button]}>
         <Text>Sign out</Text>
       </TouchableOpacity>
-    </ParallaxScrollView>
+      <List pokemons={pokemons}></List>
+    </ScrollView>
+    // </ScrollView>
   );
 }
 
@@ -74,6 +68,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     borderRadius: 10,
-    marginBottom: 10,
+    width: '30%',
   },
 });
