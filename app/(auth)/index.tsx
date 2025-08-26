@@ -48,6 +48,7 @@ export default function Login() {
         <View style={styles.inputView}>
           <Text style={styles.placeholder}>Identifiant</Text>
           <TextInput
+            testID="inputEmail"
             style={styles.input}
             returnKeyType="next"
             onSubmitEditing={() => ref_input2.current?.focus()}
@@ -58,6 +59,7 @@ export default function Login() {
         <View style={styles.inputView}>
           <Text style={styles.placeholder}>Mot de passe</Text>
           <TextInput
+            testID="inputPassword"
             ref={ref_input2}
             style={styles.input}
             secureTextEntry={true}
@@ -69,6 +71,7 @@ export default function Login() {
         </View>
 
         <TouchableOpacity
+          testID="submitButton"
           disabled={buttonDisabled}
           style={[
             styles.button,
