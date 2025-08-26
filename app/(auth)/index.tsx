@@ -65,7 +65,7 @@ export default function Login() {
             secureTextEntry={true}
             onChangeText={onChangePassword}
             onSubmitEditing={() => {
-              signIn();
+              signIn({ email: email, password: password });
             }}
           />
         </View>
@@ -78,7 +78,7 @@ export default function Login() {
             buttonDisabled ? { backgroundColor: '#cf95b2ff' } : { backgroundColor: '#DB1778' },
           ]}
           onPress={() => {
-            signIn();
+            signIn({ email: email, password: password });
             // Navigate after signing in. You may want to tweak this to ensure sign-in is
             // successful before navigating.
             // router.replace("/");
