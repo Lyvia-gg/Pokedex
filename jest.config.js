@@ -35,6 +35,7 @@ module.exports = {
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
+    '^expo-secure-store$': '<rootDir>/__mocks__/expo-secure-store.ts',
   },
   transformIgnorePatterns: [
     'node_modules/(?!(expo|expo-router|expo-linking|expo-modules-core|@react-navigation|react-native|react-native-.*|@react-native|@expo)/)',
