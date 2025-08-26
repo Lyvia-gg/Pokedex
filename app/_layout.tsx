@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 // import store from '@/redux/store';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { store } from '@/redux/store/store';
-import * as ScreenOrientation from 'expo-screen-orientation';
+// import * as ScreenOrientation from 'expo-screen-orientation';
 import { useContext, useEffect } from 'react';
 import { SessionProvider, useSession } from '@/context/AuthContext';
 import SplashScreenController from '@/app/splash';
