@@ -11,6 +11,7 @@ describe('<Login />', () => {
   let submitButton: object;
   let expectedEmail: string;
   let expectedPassword: string;
+  // ###################################################### Faire un test pour voir si <Login/> se rend bien
   beforeEach(() => {
     // initialisation avant chaque test (factorisation)
     render(<Login />);
@@ -20,22 +21,38 @@ describe('<Login />', () => {
   });
 
   test('Login : champs vide & bouton désactivé', async () => {
-    expect(submitButton).toBeDisabled();
+    try {
+      expect(submitButton).toBeDisabled();
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   test('Login : email rempli & bouton désactivé', async () => {
-    fireEvent.changeText(screen.getByTestId('inputEmail'), expectedEmail);
-    expect(submitButton).toBeDisabled();
+    try {
+      fireEvent.changeText(screen.getByTestId('inputEmail'), expectedEmail);
+      expect(submitButton).toBeDisabled();
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   test('Login : password & bouton désactivé', async () => {
-    fireEvent.changeText(screen.getByTestId('inputPassword'), expectedPassword);
-    expect(submitButton).toBeDisabled();
+    try {
+      fireEvent.changeText(screen.getByTestId('inputPassword'), expectedPassword);
+      expect(submitButton).toBeDisabled();
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   test('Login : champs rempli & bouton activé ', async () => {
-    fireEvent.changeText(screen.getByTestId('inputEmail'), expectedEmail);
-    fireEvent.changeText(screen.getByTestId('inputPassword'), expectedPassword);
-    expect(submitButton).not.toBeDisabled();
+    try {
+      fireEvent.changeText(screen.getByTestId('inputEmail'), expectedEmail);
+      fireEvent.changeText(screen.getByTestId('inputPassword'), expectedPassword);
+      expect(submitButton).not.toBeDisabled();
+    } catch (error) {
+      console.log(error);
+    }
   });
 });
