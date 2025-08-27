@@ -9,7 +9,7 @@ interface IPokemon {
     en: string;
     jp: string;
   };
-  sprites: object;
+  sprites: { regular: string; shiny: string };
   talents: object;
   types: object;
   stats: object;
@@ -26,13 +26,26 @@ interface IPokemon {
   formes: string;
 }
 
-interface GetPokemonAction {
-  type: 'GET_POKEMON';
+interface SetPokemonAction {
+  type: 'SET_POKEMON';
   pokemons: IPokemon[];
 }
 
+interface GetPokemonAction {
+  type: 'GET_POKEMON';
+}
+
+interface SelectPokemonAction {
+  type: 'SELECT_POKEMON';
+  selectedPokemon: IPokemon;
+}
+
+type PokemonAction = GetPokemonAction | SelectPokemonAction | SetPokemonAction;
+
 type PokemonState = {
   pokemons: IPokemon[];
+  selectedPokemon: IPokemon | null;
+  loading: bool;
 };
 
 type DispatchType = (args: PokemonAction) => PokemonAction;

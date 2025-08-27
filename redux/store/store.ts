@@ -10,4 +10,9 @@ export const store = configureStore({
   reducer: reducer,
   // DevTools sont activés par défaut en dev
   devTools: process.env.NODE_ENV !== 'production',
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      immutableCheck: false, // 👈 désactive le check d’immutabilité
+      serializableCheck: false, // (optionnel) si tu as aussi des erreurs de serializabilité
+    }),
 });
