@@ -16,18 +16,18 @@ export default function RootLayout() {
   //   unlockScreenOerientation();
   // }, []);
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-      <Stack
-        screenOptions={{
-          // Hide the header for all other routes.
-          headerShown: false,
-        }}
-      >
-        {/* {isLoggedIn ?<Stack.Screen name="(main)"/>:<Stack.Screen name="(auth)" />} */}
-        {/* <Stack.Screen name="(main)" options={{ headerShown: false }} /> 
+    // <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+    <Stack
+      screenOptions={{
+        // Hide the header for all other routes.
+        headerShown: false,
+      }}
+    >
+      {/* {isLoggedIn ?<Stack.Screen name="(main)"/>:<Stack.Screen name="(auth)" />} */}
+      {/* <Stack.Screen name="(main)" options={{ headerShown: false }} /> 
         <Stack.Screen name="+not-found" />  */}
-      </Stack>
-      <StatusBar style="auto" />
-    </SafeAreaView>
+    </Stack>
+    //   <StatusBar style="auto" />
+    // </SafeAreaView>
   );
 }
