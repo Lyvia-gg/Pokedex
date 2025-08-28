@@ -8,7 +8,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { useSession } from '@/context/AuthContext';
 import { Dispatch } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, shallowEqual, ReactReduxContext } from 'react-redux';
-import { getPokedexByGeneration, selectPokemon } from '@/redux/actions/pokemonAction';
+import { getPokedex, selectPokemon } from '@/redux/actions/pokemonAction';
 import React, { useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import List from '@/components/PokemonList/List';
@@ -46,7 +46,7 @@ export default function HomeScreen() {
   const dispatch: Dispatch<any> = useDispatch();
 
   useEffect(() => {
-    dispatch(getPokedexByGeneration(0));
+    dispatch(getPokedex());
     getSession();
     // console.log('dispatch (main)');
     // console.log('state pokemon', pokemons);
@@ -83,9 +83,9 @@ export default function HomeScreen() {
 
         <View style={styles.mainComponent}>
           <View style={styles.mainScreen}>
-            {!loading && pokemons.length > 0 && (
+            {pokemons.length > 0 && (
               <List
-                pokemons={pokemons}
+                // pokemons={pokemons}
                 // selectedPokemon={selectedPokemon}
                 selectPokemon={setSelectedPokemon}
               ></List>
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     justifyContent: 'flex-start',
-    gap: 10,
+    // gap: 10,
     alignItems: 'center',
     height: '100%',
     borderColor: '#000',
