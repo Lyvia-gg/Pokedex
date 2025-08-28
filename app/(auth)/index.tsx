@@ -13,7 +13,9 @@ import {
 // import { LinearGradient } from 'expo-linear-gradient';
 import { useSession } from '@/context/AuthContext';
 import PokedexButtom from '@/components/PokedexBottom';
-
+import { signIn as reduxSignIn } from '@/redux/actions/pokemonAction';
+import { Dispatch } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 export default function Login() {
   const router = useRouter();
   // const logo = require('@/assets/images/logo.png');
@@ -30,6 +32,12 @@ export default function Login() {
     } else {
       return false;
     }
+  }
+  const dispatch: Dispatch<any> = useDispatch();
+
+  function auth() {
+    // signIn({ email: email, password: password });
+    dispatch(reduxSignIn(email));
   }
 
   useEffect(() => {
@@ -71,7 +79,7 @@ export default function Login() {
                 secureTextEntry={true}
                 onChangeText={onChangePassword}
                 onSubmitEditing={() => {
-                  signIn({ email: email, password: password });
+                  auth();
                 }}
               />
             </View>
@@ -92,10 +100,7 @@ export default function Login() {
           </TouchableOpacity> */}
         </View>
       </KeyboardAvoidingView>
-      <PokedexButtom
-        buttonDisabled={buttonDisabled}
-        signIn={() => signIn({ email: email, password: password })}
-      />
+      <PokedexButtom buttonDisabled={buttonDisabled} signIn={() => auth()} />
     </View>
   );
 }

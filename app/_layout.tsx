@@ -3,7 +3,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
-import { Provider } from 'react-redux';
+import { Provider, shallowEqual, useSelector } from 'react-redux';
 // import store from '@/redux/store';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { store } from '@/redux/store/store';
@@ -15,17 +15,20 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Root() {
   return (
-    <SessionProvider>
+    // <SessionProvider>
+    <Provider store={store}>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#3a3a3a' }}>
         <SplashScreenController />
         <RootNavigator />
       </SafeAreaView>
-    </SessionProvider>
+    </Provider>
+    // </SessionProvider>
   );
 }
 
 function RootNavigator() {
   // const colorScheme = useColorScheme();
+  const session: IUser | null = useSelector((state: PokemonState) => state.user, shallowEqual);
 
   const [loaded] = useFonts({
     retroGaming: require('../assets/fonts/Retro-gaming.ttf'),
@@ -35,19 +38,18 @@ function RootNavigator() {
     // Async font loading only occurs in development.
     return null;
   }
-  const { session } = useSession();
+  // const { session } = useSession();
 
   return (
-    <Provider store={store}>
-      <Stack>
-        <Stack.Protected guard={!!session}>
-          <Stack.Screen name="(main)" options={{ headerShown: false }} />
-        </Stack.Protected>
-        <Stack.Protected guard={!session}>
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        </Stack.Protected>
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </Provider>
+    <Stack>
+      <Stack.Protected guard={!!session}>
+        <Stack.Screen name="(main)" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={!session}>
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Screen name="+not-found" />
+    </Stack>
+    // </Provider>
   );
 }
