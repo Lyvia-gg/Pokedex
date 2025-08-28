@@ -3,15 +3,14 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
 
 type itemType = {
-  pokemon: IPokemon;
+  pokemonList: IPokemonList;
   select: (id: number) => void;
 };
-export default function Item({ pokemon, select }: itemType) {
+export default function Item({ pokemonList, select }: itemType) {
   // const [selectedPokemon, setSelectedPokemon] = useState(0);
   const selectedPokemon: IPokemon | null = useSelector(
     (state: PokemonState) => state.selectedPokemon,
   );
-
   function setSelection(id: number) {
     // setSelectedPokemon(id);
     // console.log('id pokemon', id);
@@ -24,19 +23,19 @@ export default function Item({ pokemon, select }: itemType) {
       style={[
         styles.container,
         selectedPokemon &&
-          selectedPokemon.pokedex_id == pokemon.pokedex_id && { backgroundColor: '#4c752c' },
+          selectedPokemon.pokedex_id == pokemonList.pokedex_id && { backgroundColor: '#4c752c' },
       ]}
       activeOpacity={1}
-      onPress={() => setSelection(pokemon.pokedex_id)}
+      onPress={() => setSelection(pokemonList.pokedex_id)}
     >
-      <Text style={styles.text}>
-        {pokemon.pokedex_id} {pokemon.name['fr']}
+      <Text style={[styles.text, { fontFamily: 'retroGaming' }]}>
+        {pokemonList.pokedex_id} {pokemonList.name}
       </Text>
       <View
         style={[
           styles.trangleShape,
           selectedPokemon &&
-            selectedPokemon.pokedex_id == pokemon.pokedex_id && { borderTopColor: '#4c752c' },
+            selectedPokemon.pokedex_id == pokemonList.pokedex_id && { borderTopColor: '#4c752c' },
         ]}
       ></View>
     </TouchableOpacity>

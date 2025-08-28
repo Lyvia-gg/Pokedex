@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 // import { LinearGradient } from 'expo-linear-gradient';
 import { useSession } from '@/context/AuthContext';
+import PokedexButtom from '@/components/PokedexBottom';
 
 export default function Login() {
   const router = useRouter();
@@ -40,68 +41,113 @@ export default function Login() {
   }, [email, password]);
   const ref_input2 = useRef<TextInput | null>(null);
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // iOS et Android réagissent différemment
-    >
-      <View style={styles.mainComponent}>
-        <View style={styles.inputView}>
-          <Text style={styles.placeholder}>Identifiant</Text>
-          <TextInput
-            testID="inputEmail"
-            style={styles.input}
-            returnKeyType="next"
-            onSubmitEditing={() => ref_input2.current?.focus()}
-            blurOnSubmit={false}
-            onChangeText={onChangeEmail}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <Text style={styles.placeholder}>Mot de passe</Text>
-          <TextInput
-            testID="inputPassword"
-            ref={ref_input2}
-            style={styles.input}
-            secureTextEntry={true}
-            onChangeText={onChangePassword}
-            onSubmitEditing={() => {
+    <View style={{ flex: 1, display: 'flex', gap: 60, backgroundColor: '#7b7776' }}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <View style={styles.mainComponent}>
+          <View style={styles.mainScreen}>
+            <View style={styles.titleContainer}>
+              <Text style={{ fontFamily: 'retroGaming' }}>Connectez vous</Text>
+            </View>
+            <View style={styles.inputView}>
+              <Text style={styles.placeholder}>Identifiant</Text>
+              <TextInput
+                testID="inputEmail"
+                style={styles.input}
+                returnKeyType="next"
+                onSubmitEditing={() => ref_input2.current?.focus()}
+                blurOnSubmit={false}
+                onChangeText={onChangeEmail}
+              />
+            </View>
+            <View style={styles.inputView}>
+              <Text style={styles.placeholder}>Mot de passe</Text>
+              <TextInput
+                testID="inputPassword"
+                ref={ref_input2}
+                style={styles.input}
+                secureTextEntry={true}
+                onChangeText={onChangePassword}
+                onSubmitEditing={() => {
+                  signIn({ email: email, password: password });
+                }}
+              />
+            </View>
+          </View>
+
+          {/* <TouchableOpacity
+            testID="submitButton"
+            disabled={buttonDisabled}
+            style={[
+              styles.button,
+              buttonDisabled ? { backgroundColor: '#cf95b2ff' } : { backgroundColor: '#DB1778' },
+            ]}
+            onPress={() => {
               signIn({ email: email, password: password });
             }}
-          />
+          >
+            <Text style={{ color: 'white' }}>Se connecter</Text>
+          </TouchableOpacity> */}
         </View>
-
-        <TouchableOpacity
-          testID="submitButton"
-          disabled={buttonDisabled}
-          style={[
-            styles.button,
-            buttonDisabled ? { backgroundColor: '#cf95b2ff' } : { backgroundColor: '#DB1778' },
-          ]}
-          onPress={() => {
-            signIn({ email: email, password: password });
-            // Navigate after signing in. You may want to tweak this to ensure sign-in is
-            // successful before navigating.
-            // router.replace("/");
-          }}
-        >
-          <Text style={{ color: 'white' }}>Se connecter</Text>
-        </TouchableOpacity>
-        <Text style={{ color: '#DB1778' }}>Continuer sans compte</Text>
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+      <PokedexButtom
+        buttonDisabled={buttonDisabled}
+        signIn={() => signIn({ email: email, password: password })}
+      />
+    </View>
   );
 }
 const styles = StyleSheet.create({
-  mainComponent: {
-    flex: 1,
-    padding: 40,
+  container: {
+    // flex: 1,
+    height: '45%',
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
+  },
+  mainComponent: {
+    // flex: 1,
+    // padding: 40,
+    height: '100%',
     flexDirection: 'column',
-    backgroundColor: 'white',
-    paddingBottom: '25%',
+    backgroundColor: '#3a3a3a',
+    borderColor: '#000',
+    borderWidth: 2,
+    // borderWidth: 10,
+    // borderTopWidth: 45,
+    padding: 10,
+    paddingTop: 45,
+    // backgroundColor: '#7b7776',
+    width: '90%',
+    // marginTop: 20,
+    // marginBottom: 30,
+    // height: '35%',
+    // paddingBottom: '25%',
     position: 'relative',
+  },
+  mainScreen: {
+    backgroundColor: '#21cc96',
+    borderColor: '#000',
+    borderWidth: 2,
+    // flex: 1,
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    gap: 10,
+    alignItems: 'center',
+    height: '100%',
+  },
+  titleContainer: {
+    width: '100%',
+    borderColor: '#3a3a3a',
+    borderTopWidth: 5,
+    borderBottomWidth: 5,
+    backgroundColor: 'white',
+    alignSelf: 'flex-start',
+    padding: 10,
+    // position: 'absolute',
+    top: 5,
   },
   background: {
     position: 'absolute',
@@ -110,20 +156,19 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: '60%',
   },
-  container: {
-    flex: 1,
-  },
+
   logo: {
     width: 100,
     height: 100,
   },
   input: {
-    width: '100%',
+    width: '90%',
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    borderColor: '#DDD',
+    borderColor: '#3a3a3a',
     borderRadius: 10,
+    fontFamily: 'retroGaming',
   },
   inputView: {
     position: 'relative',
@@ -134,9 +179,10 @@ const styles = StyleSheet.create({
     top: -5,
     left: 20,
     zIndex: 5,
-    backgroundColor: 'white',
+    backgroundColor: '#21cc96',
     padding: 5,
-    color: '#AAA',
+    color: '#3a3a3ab4',
+    fontFamily: 'retroGaming',
   },
   button: {
     // backgroundColor: "#DB1778",

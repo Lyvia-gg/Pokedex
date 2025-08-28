@@ -3,7 +3,7 @@ import Item from './Item';
 // import Paging from "";
 
 type listType = {
-  pokemons: readonly IPokemon[];
+  pokemons: readonly IPokemonList[];
   selectPokemon: (id: number) => void;
   // selectedPokemon: number;
 };
@@ -17,14 +17,14 @@ export default function List({ pokemons, selectPokemon }: listType) {
       style={styles.list}
       data={pokemons}
       //   onEndReached={() => fetchMoreData()}
-      keyExtractor={(item) => item.pokedex_id.toString()}
-      renderItem={({ item }) => (
+      keyExtractor={(item, index) => index.toString()}
+      renderItem={({ item, index }) => (
         <Item
           select={(id: number) => {
             // console.log(id);
             selectPokemon(id);
           }}
-          pokemon={item}
+          pokemonList={{ ...item, pokedex_id: index + 1 }}
         />
       )}
     />
@@ -42,10 +42,8 @@ const styles = StyleSheet.create({
   list: {
     display: 'flex',
     flexDirection: 'column',
-    // justifyContent: 'center',
     width: '100%',
     flex: 1,
-    // marginRight: 20,
     gap: 5,
   },
 });

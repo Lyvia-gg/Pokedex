@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -14,24 +14,29 @@ import { View } from 'react-native';
 import List from '@/components/PokemonList/List';
 import { store } from '@/redux/store/store';
 import Details from '@/components/PokemonDetails/Details';
+import BottomMenu from '@/components/BottomMenu';
+import { LinearGradient } from 'expo-linear-gradient';
 
 // type Props = {
 //   fetchPokemon: (pokemons: IPokemon | any) => void
 // }
 
 export default function HomeScreen() {
-  const { signOut, getSession } = useSession();
+  const { getSession } = useSession();
   // const [selectedPokemon, setSelectedPokemon] = useState(0);
   // const { PokemonState } = useSelector(state => state.pokemons);
   // const pokemons: readonly IPokemon[] = useSelector(
   //   (state: PokemonState) => state.pokemons,
   //   shallowEqual,
   // );
-  const pokemons: readonly IPokemon[] = useSelector(
-    (state: PokemonState) => state.pokemons,
+  const pokemons: readonly IPokemonList[] = useSelector(
+    (state: PokemonState) => state.pokemons.pokemonList,
     shallowEqual,
   );
-  const loading: boolean = useSelector((state: PokemonState) => state.loading, shallowEqual);
+  const loading: boolean = useSelector(
+    (state: PokemonState) => state.pokemons.isLoading,
+    shallowEqual,
+  );
 
   function setSelectedPokemon(id: number) {
     // console.log('index id', id);
@@ -41,7 +46,7 @@ export default function HomeScreen() {
   const dispatch: Dispatch<any> = useDispatch();
 
   useEffect(() => {
-    dispatch(getPokedexByGeneration(5));
+    dispatch(getPokedexByGeneration(0));
     getSession();
     // console.log('dispatch (main)');
     // console.log('state pokemon', pokemons);
@@ -50,23 +55,46 @@ export default function HomeScreen() {
   return (
     // <ScrollView>
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => signOut()} style={[styles.button]}>
-        <Text>Sign out</Text>
-      </TouchableOpacity>
-      <View style={styles.scrollView}>
-        <Details></Details>
-      </View>
-      <View style={styles.scrollView}>
-        {!loading && pokemons.length > 0 && (
-          <List
-            pokemons={pokemons}
-            // selectedPokemon={selectedPokemon}
-            selectPokemon={setSelectedPokemon}
-          ></List>
-        )}
+      <View style={styles.separation}></View>
+      <View style={styles.pokedex}>
+        <View
+          style={[
+            styles.mainComponent,
+            { paddingTop: 10, paddingBottom: 45, borderBottomWidth: 0 },
+          ]}
+        >
+          <View style={styles.mainScreen}>
+            <Details />
+          </View>
+        </View>
+        {/* <View style={styles.separation}>
+          <LinearGradient
+            // Background Linear Gradient
+            colors={['transparent', '#000']}
+            end={{ x: 0.5, y: 0.2 }}
+            style={styles.background}
+          />
+          <LinearGradient
+            // Background Linear Gradient
+            colors={['#ffffff96', 'transparent']}
+            style={styles.background}
+          />
+        </View> */}
+
+        <View style={styles.mainComponent}>
+          <View style={styles.mainScreen}>
+            {!loading && pokemons.length > 0 && (
+              <List
+                pokemons={pokemons}
+                // selectedPokemon={selectedPokemon}
+                selectPokemon={setSelectedPokemon}
+              ></List>
+            )}
+            <BottomMenu />
+          </View>
+        </View>
       </View>
     </View>
-    // </ScrollView>
   );
 }
 
@@ -75,14 +103,60 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    position: 'relative',
+    justifyContent: 'center',
+    backgroundColor: '#7b7776',
+  },
+  mainComponent: {
+    height: '50%',
+    flexDirection: 'column',
+    backgroundColor: '#3a3a3a',
+    borderColor: '#000',
+    borderWidth: 2,
+    padding: 10,
+    paddingTop: 45,
+    width: '90%',
+    position: 'relative',
+  },
+  mainScreen: {
     backgroundColor: '#21cc96',
+    // flex: 1,
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    gap: 10,
+    alignItems: 'center',
+    height: '100%',
+    borderColor: '#000',
+    borderWidth: 2,
+  },
+  pokedex: {
+    display: 'flex',
+    flex: 1,
+    width: '100%',
+    // justifyContent: 'space-evenly',
+    // gap: 10,
+    alignItems: 'center',
+  },
+  separation: {
+    width: '100%',
+    height: 5,
+    zIndex: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    backgroundColor: '#000',
+  },
+  background: {
+    width: '100%',
+    position: 'absolute',
+    height: '100%',
   },
   scrollView: {
     // flex: 1,
     display: 'flex',
     width: '100%',
-    height: '45%',
+    height: '46%',
     // width: '50%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -97,9 +171,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#DB1778',
     padding: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
     borderRadius: 10,
-    width: '25%',
+    // width: '30%',
   },
 });

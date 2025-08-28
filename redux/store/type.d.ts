@@ -1,34 +1,51 @@
 // something.d.ts -> le .d permet de crée des définitions, qui rend les type dispo partout dans le projet !
 
+// interface IPokemon {
+//   pokedex_id: number;
+//   generation: number;
+//   category: string;
+//   name: {
+//     fr: string;
+//     en: string;
+//     jp: string;
+//   };
+//   sprites: { regular: string; shiny: string };
+//   talents: object;
+//   types: object;
+//   stats: object;
+//   resistances: object;
+//   evolution: object;
+//   next: object;
+//   mega: any;
+//   height: string;
+//   weight: string;
+//   egg_groups: object;
+//   sexe: object;
+//   catch_rate: number;
+//   level_100: number;
+//   formes: string;
+// }
+interface ITypesPokemon {
+  type: { name: string; url: string };
+}
 interface IPokemon {
+  name: string;
   pokedex_id: number;
-  generation: number;
-  category: string;
-  name: {
-    fr: string;
-    en: string;
-    jp: string;
-  };
-  sprites: { regular: string; shiny: string };
-  talents: object;
-  types: object;
-  stats: object;
-  resistances: object;
-  evolution: object;
-  next: object;
-  mega: any;
-  height: string;
-  weight: string;
-  egg_groups: object;
-  sexe: object;
-  catch_rate: number;
-  level_100: number;
-  formes: string;
+  sprite: { regular: string };
+  description: string;
+  genera: string;
+  types: ITypesPokemon[];
+}
+
+interface IPokemonList {
+  name: string;
+  pokedex_id: number;
+  url: string;
 }
 
 interface SetPokemonAction {
   type: 'SET_POKEMON';
-  pokemons: IPokemon[];
+  pokemons: IPokemonList[];
 }
 
 interface GetPokemonAction {
@@ -40,12 +57,16 @@ interface SelectPokemonAction {
   selectedPokemon: IPokemon;
 }
 
+interface IUser {
+  email: string;
+}
+
 type PokemonAction = GetPokemonAction | SelectPokemonAction | SetPokemonAction;
 
 type PokemonState = {
-  pokemons: IPokemon[];
+  pokemons: { isLoading: boolean; pokemonList: IPokemonList[] };
   selectedPokemon: IPokemon | null;
-  loading: bool;
+  user: IUser | null;
 };
 
 type DispatchType = (args: PokemonAction) => PokemonAction;
