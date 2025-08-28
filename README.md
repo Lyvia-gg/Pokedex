@@ -5,5 +5,6 @@
 ```bash
 │
 ├── pokemons         <- The pokemons list
+├── pokemonSelected  <- The pokemon selected
 ├── user             <- User informations
 ```
