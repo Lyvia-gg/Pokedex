@@ -1,7 +1,7 @@
 import * as actionTypes from '@/redux/store/actionTypes';
 
 const initialState: PokemonState = {
-  pokemons: { isLoading: false, pokemonList: [] },
+  pokemons: { isLoading: false, pokemonList: [], nextPage: 0 },
   selectedPokemon: null,
   user: null,
 };
@@ -15,7 +15,20 @@ const reducer = (state: PokemonState = initialState, action: PokemonAction): Pok
       return (state = { ...state, selectedPokemon: action.selectedPokemon });
 
     case actionTypes.SET_POKEMON:
-      return (state = { ...state, pokemons: { pokemonList: action.pokemons, isLoading: false } });
+      return (state = {
+        ...state,
+        pokemons: {
+          pokemonList: state.pokemons.pokemonList.concat(action.pokemons),
+          isLoading: false,
+          nextPage: state.pokemons.nextPage + 100,
+        },
+      });
+    case actionTypes.SIGN_IN:
+      console.log('blblbl');
+      return (state = { ...state, user: { email: action.email } });
+    case actionTypes.SIGN_OUT:
+      console.log('pas blblbl');
+      return (state = { ...state, user: null });
     // case actionTypes.REMOVE_POKEMON:
     //   const updatedPokemons: IPokemon[] = state.pokemons.filter(
     //     (pokemon) => pokemon.id !== action.pokemon.id,

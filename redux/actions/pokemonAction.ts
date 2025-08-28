@@ -23,13 +23,33 @@ import { store } from '@/redux/store/store';
 //   return simulateHttpRequest(action);
 // }
 
-export function getPokedexByGeneration(numGen: number) {
+export function signIn(email: string) {
+  return (dispatch: Dispatch<any>) => {
+    const action: SignIn = {
+      type: actionTypes.SIGN_IN,
+      email,
+    };
+    dispatch(action, email);
+  };
+}
+
+export function signOut() {
+  return async (dispatch: Dispatch<any>) => {
+    const action: SignOut = {
+      type: actionTypes.SIGN_OUT,
+    };
+    dispatch(action);
+  };
+}
+
+export function getPokedex() {
   return async (dispatch: Dispatch<any>) => {
     const actionGet: GetPokemonAction = {
       type: actionTypes.GET_POKEMON,
     };
     dispatch(actionGet);
-    let response = await getPokedexOffsetApi(numGen);
+    const offset = store.getState().pokemons.nextPage;
+    let response = await getPokedexOffsetApi(offset);
     let pokemons: any = await response.json();
     // const half = Math.ceil(pokemons.length / 4);
     // const firstPart = pokemons.slice(0, half);
@@ -73,7 +93,7 @@ export function selectPokemon(pokedex_id: number) {
           regular: pokemon.sprites.front_default,
         },
         description: flavor_text[flavor_text.length - 1].flavor_text,
-        genera: pokemonSpecies.genera[7].genus,
+        genera: pokemonSpecies.genera[7] ? pokemonSpecies.genera[7].genus : '',
         types: pokemon.types,
       },
     };
