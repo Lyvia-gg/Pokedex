@@ -1,5 +1,5 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-// import { useFonts } from 'expo-font';
+import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
@@ -16,7 +16,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 export default function Root() {
   return (
     <SessionProvider>
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#3a3a3a' }}>
         <SplashScreenController />
         <RootNavigator />
       </SafeAreaView>
@@ -27,14 +27,14 @@ export default function Root() {
 function RootNavigator() {
   // const colorScheme = useColorScheme();
 
-  // const [loaded] = useFonts({
-  //   SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  // });
+  const [loaded] = useFonts({
+    retroGaming: require('../assets/fonts/Retro-gaming.ttf'),
+  });
 
-  // if (!loaded) {
-  //   // Async font loading only occurs in development.
-  //   return null;
-  // }
+  if (!loaded) {
+    // Async font loading only occurs in development.
+    return null;
+  }
   const { session } = useSession();
 
   return (
