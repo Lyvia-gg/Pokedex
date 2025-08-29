@@ -16,27 +16,29 @@ export default function Details() {
             contentFit="contain"
           ></Image>
           <View style={styles.description}>
-            <Text
-              style={{
-                textTransform: 'capitalize',
-                fontFamily: 'retroGaming',
-                color: '#535353',
-              }}
-            >
-              {selectedPokemon.name}
-            </Text>
-            <Text
-              style={{
-                textTransform: 'capitalize',
-                fontFamily: 'retroGaming',
-                position: 'absolute',
-                top: 5,
-                left: 10,
-                color: '#535353',
-              }}
-            >
-              {selectedPokemon.pokedex_id}
-            </Text>
+            <View style={styles.pokemonId}>
+              <Text
+                style={{
+                  textTransform: 'capitalize',
+                  fontFamily: 'retroGaming',
+                  // position: 'absolute',
+                  // top: 5,
+                  // left: 10,
+                  color: '#535353',
+                }}
+              >
+                {selectedPokemon.pokedex_id}
+              </Text>
+              <Text
+                style={{
+                  textTransform: 'capitalize',
+                  fontFamily: 'retroGaming',
+                  color: '#535353',
+                }}
+              >
+                {selectedPokemon.name}
+              </Text>
+            </View>
             <Text
               style={{
                 fontFamily: 'retroGaming',
@@ -93,9 +95,11 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     justifyContent: 'space-between',
-    gap: 30,
+    // gap: 30,
     width: '100%',
     paddingTop: 20,
+    paddingBottom: 5,
+    backgroundColor: '#21cc96',
   },
   view: {
     display: 'flex',
@@ -114,7 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#3a3a3a',
     paddingLeft: 20,
     borderBlockColor: 'black',
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderTopWidth: 2,
     paddingRight: 20,
     paddingTop: 15,
@@ -137,6 +141,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // padding: 10,
     width: '45%',
+  },
+  pokemonId: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   pokemonImg: {
     flex: 1,
