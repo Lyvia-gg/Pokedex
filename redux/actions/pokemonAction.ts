@@ -8,7 +8,7 @@ import { store } from '@/redux/store/store';
 
 // export function getPokemon(pokemon: IPokemon) {
 //   const action: PokemonAction = {
-//     type: actionTypes.GET_POKEMON,
+//     type: actionTypes.REQUEST_POKEMON_LIST,
 //     pokemon,
 //   };
 
@@ -44,15 +44,15 @@ export function signOut() {
 
 export function getPokedex() {
   return async (dispatch: Dispatch<any>) => {
-    const actionGet: GetPokemonAction = {
-      type: actionTypes.GET_POKEMON,
+    const actionGet: RequestPokemonAction = {
+      type: actionTypes.REQUEST_POKEMON_LIST,
     };
     dispatch(actionGet);
     const offset = store.getState().pokemons.nextPage;
     let response = await getPokedexOffsetApi(offset);
     let pokemons: any = await response.json();
     const action: SetPokemonAction = {
-      type: actionTypes.SET_POKEMON,
+      type: actionTypes.RECEIVE_POKEMON_LIST,
       pokemons: pokemons.results,
     };
     dispatch(action, pokemons);
@@ -60,30 +60,20 @@ export function getPokedex() {
 }
 export function selectPokemon(pokedex_id: number) {
   return async (dispatch: Dispatch<any>) => {
-    // const actionLoading: IsLoadingPokemonAction = {
-    //   type: actionTypes.ISLOADING_POKEMON,
-    // };
-    // dispatch(actionLoading);
-    // const pokemonsList: readonly IPokemonList[] = store.getState().pokemons;
-    // let pokemonSelected = pokemonsList.filter((pokemon) => {
-    //   // console.log(pokemon);
-    //   return pokemon.pokedex_id == pokedex_id;
-    // });
+    const actionReceive: RequestSelectPokemonAction = {
+      type: actionTypes.REQUEST_SELECT_POKEMON,
+      pokedex_id,
+    };
+    dispatch(actionReceive);
     let response = await getPokemonApi(pokedex_id);
     let pokemon: any = await response.json();
     let responseSpecies = await getDetailsPokemonApi(pokedex_id);
     let pokemonSpecies: any = await responseSpecies.json();
     let flavor_text = pokemonSpecies.flavor_text_entries.filter((entries: any) => {
-      // console.log(pokemon);
       return entries.language.name == 'en';
     });
-    // console.log(flavor_text);
-
-    // 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/' +
-    // pokemonSpecies.id +
-    // '.png',
-    const action: SelectPokemonAction = {
-      type: actionTypes.SELECT_POKEMON,
+    const action: ReceiveSelectPokemonAction = {
+      type: actionTypes.RECEIVE_SELECT_POKEMON,
       selectedPokemon: {
         name: pokemonSpecies.name,
         pokedex_id: pokemonSpecies.id,
@@ -99,7 +89,7 @@ export function selectPokemon(pokedex_id: number) {
     // console.log('select pokemon', pokemonSelected);
     // let pokemon: IPokemon =
     // const action: SelectPokemonAction = {
-    //   type: actionTypes.SELECT_POKEMON,
+    //   type: actionTypes.REQUEST_SELECT_POKEMON,
     //   selectedPokemon: pokemonSelected[0],
     // };
     // dispatch(action, pokemonSelected);

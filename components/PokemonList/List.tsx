@@ -58,7 +58,7 @@ export default function List({ selectPokemon, style }: ListType) {
       onEndReached={handleScroll}
       data={pokemons}
       ListFooterComponent={
-        <View>
+        <View style={{ paddingBottom: 20 }}>
           <ActivityIndicator size="large" color="#000" />
         </View>
       }
@@ -87,5 +87,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     gap: 5,
+    paddingTop: 10,
+    // paddingBottom: 20,
   },
 });

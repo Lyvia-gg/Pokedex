@@ -16,6 +16,7 @@ import PokedexButtom from '@/components/PokedexBottom';
 import { signIn as reduxSignIn } from '@/redux/actions/pokemonAction';
 import { Dispatch } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
+import { LED } from '@/components/ui/LED';
 export default function Login() {
   const router = useRouter();
   // const logo = require('@/assets/images/logo.png');
@@ -23,6 +24,8 @@ export default function Login() {
   const [password, onChangePassword] = useState(
     "Au commencement, il regarda Arceus crée l'univers",
   );
+  // const [email, onChangeEmail] = useState('');
+  // const [password, onChangePassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const { signIn } = useSession();
 
@@ -58,6 +61,7 @@ export default function Login() {
       >
         <View style={styles.mainComponent}>
           <View style={styles.mainScreen}>
+            <LED />
             <View style={styles.titleContainer}>
               <Text style={{ fontFamily: 'retroGaming' }}>Connectez vous</Text>
             </View>
@@ -146,6 +150,7 @@ const styles = StyleSheet.create({
     gap: 10,
     alignItems: 'center',
     height: '100%',
+    position: 'relative',
   },
   titleContainer: {
     width: '100%',

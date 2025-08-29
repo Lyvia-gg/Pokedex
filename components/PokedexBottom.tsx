@@ -21,7 +21,12 @@ export default function PokedexButtom({ buttonDisabled, signIn }: ButtonType) {
         {/* <TouchableOpacity onPress={() => signOut()} style={[styles.button]}>
         <Text style={{ fontFamily: 'retroGaming', color: 'red', fontSize: 30 }}>X</Text>
         </TouchableOpacity> */}
-        <TouchableOpacity disabled={buttonDisabled} onPress={signIn} style={styles.pokeballDot}>
+        <TouchableOpacity
+          testID="submitButton"
+          disabled={buttonDisabled}
+          onPress={signIn}
+          style={styles.pokeballDot}
+        >
           {!buttonDisabled && <Text style={{ fontFamily: 'retroGaming' }}>Start</Text>}
         </TouchableOpacity>
         <View style={styles.pokeballBar}></View>

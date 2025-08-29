@@ -44,7 +44,7 @@ interface IPokemonList {
 }
 
 interface SetPokemonAction {
-  type: 'SET_POKEMON';
+  type: 'RECEIVE_POKEMON_LIST';
   pokemons: IPokemonList[];
 }
 
@@ -57,12 +57,16 @@ interface SignOut {
   type: 'SIGN_OUT';
 }
 
-interface GetPokemonAction {
-  type: 'GET_POKEMON';
+interface RequestPokemonAction {
+  type: 'REQUEST_POKEMON_LIST';
 }
 
-interface SelectPokemonAction {
-  type: 'SELECT_POKEMON';
+interface RequestSelectPokemonAction {
+  type: 'REQUEST_SELECT_POKEMON';
+  pokedex_id: number;
+}
+interface ReceiveSelectPokemonAction {
+  type: 'RECEIVE_SELECT_POKEMON';
   selectedPokemon: IPokemon;
 }
 
@@ -70,11 +74,17 @@ interface IUser {
   email: string;
 }
 
-type PokemonAction = GetPokemonAction | SelectPokemonAction | SetPokemonAction | SignIn | SignOut;
+type PokemonAction =
+  | RequestPokemonAction
+  | RequestSelectPokemonAction
+  | ReceiveSelectPokemonAction
+  | SetPokemonAction
+  | SignIn
+  | SignOut;
 
 type PokemonState = {
   pokemons: { isLoading: boolean; pokemonList: IPokemonList[]; nextPage: number };
-  selectedPokemon: IPokemon | null;
+  selectedPokemon: { isLoading: boolean; pokedex_id: number | null; pokemon: IPokemon | null };
   user: IUser | null;
 };
 

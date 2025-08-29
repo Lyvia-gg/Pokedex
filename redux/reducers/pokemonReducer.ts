@@ -2,19 +2,33 @@ import * as actionTypes from '@/redux/store/actionTypes';
 
 const initialState: PokemonState = {
   pokemons: { isLoading: false, pokemonList: [], nextPage: 0 },
-  selectedPokemon: null,
+  selectedPokemon: { isLoading: false, pokedex_id: null, pokemon: null },
   user: null,
 };
 
 const reducer = (state: PokemonState = initialState, action: PokemonAction): PokemonState => {
   switch (action.type) {
-    case actionTypes.GET_POKEMON:
+    case actionTypes.REQUEST_POKEMON_LIST:
       return (state = { ...state, pokemons: { ...state.pokemons, isLoading: true } });
-    // console.log('reducer !', action.pokemons);
-    case actionTypes.SELECT_POKEMON:
-      return (state = { ...state, selectedPokemon: action.selectedPokemon });
-
-    case actionTypes.SET_POKEMON:
+    case actionTypes.REQUEST_SELECT_POKEMON:
+      return (state = {
+        ...state,
+        selectedPokemon: {
+          ...state.selectedPokemon,
+          pokedex_id: action.pokedex_id,
+          isLoading: true,
+        },
+      });
+    case actionTypes.RECEIVE_SELECT_POKEMON:
+      return (state = {
+        ...state,
+        selectedPokemon: {
+          ...state.selectedPokemon,
+          pokemon: action.selectedPokemon,
+          isLoading: false,
+        },
+      });
+    case actionTypes.RECEIVE_POKEMON_LIST:
       return (state = {
         ...state,
         pokemons: {

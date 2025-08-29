@@ -8,8 +8,8 @@ type itemType = {
 };
 export default function Item({ pokemonList, select }: itemType) {
   // const [selectedPokemon, setSelectedPokemon] = useState(0);
-  const selectedPokemon: IPokemon | null = useSelector(
-    (state: PokemonState) => state.selectedPokemon,
+  const selectedPokemon: number | null = useSelector(
+    (state: PokemonState) => state.selectedPokemon.pokedex_id,
   );
   function setSelection(id: number) {
     // setSelectedPokemon(id);
@@ -22,8 +22,7 @@ export default function Item({ pokemonList, select }: itemType) {
     <TouchableOpacity
       style={[
         styles.container,
-        selectedPokemon &&
-          selectedPokemon.pokedex_id == pokemonList.pokedex_id && { backgroundColor: '#4c752c' },
+        selectedPokemon == pokemonList.pokedex_id && { backgroundColor: '#4c752c' },
       ]}
       activeOpacity={1}
       onPress={() => setSelection(pokemonList.pokedex_id)}
@@ -34,8 +33,7 @@ export default function Item({ pokemonList, select }: itemType) {
       <View
         style={[
           styles.trangleShape,
-          selectedPokemon &&
-            selectedPokemon.pokedex_id == pokemonList.pokedex_id && { borderTopColor: '#4c752c' },
+          selectedPokemon == pokemonList.pokedex_id && { borderTopColor: '#4c752c' },
         ]}
       ></View>
     </TouchableOpacity>

@@ -1,12 +1,13 @@
 import { Image } from 'expo-image';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 export default function Details() {
   const selectedPokemon: IPokemon | null = useSelector(
-    (state: PokemonState) => state.selectedPokemon,
+    (state: PokemonState) => state.selectedPokemon.pokemon,
   );
-  if (selectedPokemon)
+  const isLoading: boolean = useSelector((state: PokemonState) => state.selectedPokemon.isLoading);
+  if (selectedPokemon && !isLoading)
     return (
       <View style={styles.container}>
         <View style={[styles.view, styles.topView]}>
@@ -89,6 +90,13 @@ export default function Details() {
         </View>
       </View>
     );
+  else if (isLoading) {
+    return (
+      <View style={styles.containerLoading}>
+        <ActivityIndicator size="large" color="#000" />
+      </View>
+    );
+  }
 }
 const styles = StyleSheet.create({
   container: {
@@ -100,6 +108,12 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 5,
     backgroundColor: '#21cc96',
+  },
+  containerLoading: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   view: {
     display: 'flex',
