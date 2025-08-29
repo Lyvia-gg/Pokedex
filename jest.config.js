@@ -36,9 +36,10 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
     '^expo-secure-store$': '<rootDir>/__mocks__/expo-secure-store.ts',
+    '^redux-store$': '<rootDir>/__mocks__/redux-store.ts',
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(expo|expo-router|expo-linking|expo-modules-core|@react-navigation|react-native|react-native-.*|@react-native|@expo)/)',
+    'node_modules/(?!(expo|expo-router|expo-linking|expo-modules-core|@react-navigation|react-native|react-native-.*|@react-native|@expo|@react-native|react-native|react-redux)/)',
   ],
   setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect', '<rootDir>/setup-jest.js'],
 };

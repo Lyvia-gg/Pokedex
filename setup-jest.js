@@ -22,3 +22,4 @@ jest.mock('expo-router', () => ({
 // );
 
 jest.mock('expo-secure-store');
+jest.mock('redux-store');
