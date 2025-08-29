@@ -41,7 +41,7 @@ function RootNavigator() {
   // const { session } = useSession();
 
   return (
-    <Stack>
+    <Stack screenOptions={{ animation: 'fade' }}>
       <Stack.Protected guard={!!session}>
         <Stack.Screen name="(main)" options={{ headerShown: false }} />
       </Stack.Protected>
