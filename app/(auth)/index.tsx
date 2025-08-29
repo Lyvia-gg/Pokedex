@@ -19,8 +19,10 @@ import { useDispatch } from 'react-redux';
 export default function Login() {
   const router = useRouter();
   // const logo = require('@/assets/images/logo.png');
-  const [email, onChangeEmail] = useState('');
-  const [password, onChangePassword] = useState('');
+  const [email, onChangeEmail] = useState('chuck.noris@gmail.com');
+  const [password, onChangePassword] = useState(
+    "Au commencement, il regarda Arceus crée l'univers",
+  );
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const { signIn } = useSession();
 
@@ -63,6 +65,7 @@ export default function Login() {
               <Text style={styles.placeholder}>Identifiant</Text>
               <TextInput
                 testID="inputEmail"
+                value={email}
                 style={styles.input}
                 returnKeyType="next"
                 onSubmitEditing={() => ref_input2.current?.focus()}
@@ -75,6 +78,7 @@ export default function Login() {
               <TextInput
                 testID="inputPassword"
                 ref={ref_input2}
+                value={password}
                 style={styles.input}
                 secureTextEntry={true}
                 onChangeText={onChangePassword}
