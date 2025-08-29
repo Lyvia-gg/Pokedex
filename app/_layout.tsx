@@ -17,7 +17,7 @@ export default function Root() {
   return (
     // <SessionProvider>
     <Provider store={store}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#3a3a3a' }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#7b7776' }}>
         <SplashScreenController />
         <RootNavigator />
       </SafeAreaView>
