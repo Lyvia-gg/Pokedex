@@ -6,7 +6,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 type BottomMenuType = {
-  setShowFilter: () => void;
+  setShowFilter: (value: boolean) => void;
   showFilter: boolean;
 };
 
@@ -19,23 +19,17 @@ export default function BottomMenu({ setShowFilter, showFilter }: BottomMenuType
       <LinearGradient colors={['transparent', '#000']} style={styles.background} />
       <LinearGradient colors={['#ffffff60', 'transparent']} style={styles.background} />
       <TouchableOpacity
-        onPress={setShowFilter}
+        onPress={() => setShowFilter(true)}
         style={[styles.button, { width: 'auto' }, showFilter ? { display: 'none' } : {}]}
       >
         <Text style={{ fontFamily: 'retroGaming', color: 'white', fontSize: 20 }}>Filter</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        // onPress={showFilter ? resetFilter : () => {}}
-        style={[styles.button, { right: 0 }]}
-      >
+      <TouchableOpacity onPress={() => setShowFilter(false)} style={[styles.button, { right: 0 }]}>
         <Text style={{ fontFamily: 'retroGaming', color: 'rgba(7, 115, 238, 1)', fontSize: 35 }}>
           {'<'}
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => (showFilter ? setShowFilter() : dispatch(signOut()))}
-        style={[styles.button, { right: 40 }]}
-      >
+      <TouchableOpacity onPress={() => dispatch(signOut())} style={[styles.button, { right: 40 }]}>
         <Text style={{ fontFamily: 'retroGaming', color: 'red', fontSize: 30 }}>X</Text>
       </TouchableOpacity>
     </View>
@@ -53,6 +47,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     alignSelf: 'flex-end',
+    borderColor: '#000',
+    borderTopWidth: 2,
     // gap: 5,
   },
   button: {

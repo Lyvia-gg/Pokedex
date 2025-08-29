@@ -3,6 +3,7 @@ import ModalFilter from './ModalFilter';
 import List from './PokemonList/List';
 import BottomMenu from './BottomMenu';
 import { useState } from 'react';
+import { LED } from './ui/LED';
 
 type BottomScreenType = {
   setSelectedPokemon: (id: number) => void;
@@ -12,11 +13,12 @@ export default function BottomScreen({ setSelectedPokemon }: BottomScreenType) {
   const [showFilter, setShowFilter] = useState<boolean>(false);
   return (
     <View style={styles.mainScreen}>
+      <LED />
       <ModalFilter style={!showFilter ? { display: 'none' } : {}} />
       <List style={showFilter ? { display: 'none' } : {}} selectPokemon={setSelectedPokemon} />
 
       {/* <BottomScreen pokemons={pokemons} setSelectedPokemon={setSelectedPokemon} /> */}
-      <BottomMenu showFilter={showFilter} setShowFilter={() => setShowFilter(!showFilter)} />
+      <BottomMenu showFilter={showFilter} setShowFilter={(value) => setShowFilter(value)} />
     </View>
   );
 }
