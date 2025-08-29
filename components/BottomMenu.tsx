@@ -5,24 +5,37 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-export default function BottomMenu() {
+type BottomMenuType = {
+  setShowFilter: () => void;
+  showFilter: boolean;
+};
+
+export default function BottomMenu({ setShowFilter, showFilter }: BottomMenuType) {
   // const { signOut } = useSession();
   const dispatch: Dispatch<any> = useDispatch();
 
   return (
     <View style={styles.container}>
-      <LinearGradient
-        // Background Linear Gradient
-        colors={['transparent', '#000']}
-        end={{ x: 0.5, y: 0.2 }}
-        style={styles.background}
-      />
-      <LinearGradient
-        // Background Linear Gradient
-        colors={['#ffffff60', 'transparent']}
-        style={styles.background}
-      />
-      <TouchableOpacity onPress={() => dispatch(signOut())} style={[styles.button]}>
+      <LinearGradient colors={['transparent', '#000']} style={styles.background} />
+      <LinearGradient colors={['#ffffff60', 'transparent']} style={styles.background} />
+      <TouchableOpacity
+        onPress={setShowFilter}
+        style={[styles.button, { width: 'auto' }, showFilter ? { display: 'none' } : {}]}
+      >
+        <Text style={{ fontFamily: 'retroGaming', color: 'white', fontSize: 20 }}>Filter</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        // onPress={showFilter ? resetFilter : () => {}}
+        style={[styles.button, { right: 0 }]}
+      >
+        <Text style={{ fontFamily: 'retroGaming', color: 'rgba(7, 115, 238, 1)', fontSize: 35 }}>
+          {'<'}
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => (showFilter ? setShowFilter() : dispatch(signOut()))}
+        style={[styles.button, { right: 40 }]}
+      >
         <Text style={{ fontFamily: 'retroGaming', color: 'red', fontSize: 30 }}>X</Text>
       </TouchableOpacity>
     </View>
@@ -36,13 +49,17 @@ const styles = StyleSheet.create({
     height: 50,
     display: 'flex',
     position: 'relative',
-    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    // gap: 5,
   },
   button: {
     padding: 10,
-    borderRadius: 10,
+    // borderRadius: 10,
     width: 50,
-    position: 'relative',
+    position: 'absolute',
     zIndex: 10,
   },
   background: {

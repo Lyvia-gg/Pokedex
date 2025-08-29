@@ -16,13 +16,13 @@ import { getPokedex } from '@/redux/actions/pokemonAction';
 import { useEffect, useState } from 'react';
 // import Paging from "";
 // import {NativeScrollEvent} from "@CoreEventTypes"
-type listType = {
-  // pokemons: readonly IPokemonList[];
+type ListType = {
   selectPokemon: (id: number) => void;
+  style?: object;
   // selectedPokemon: number;
 };
 
-export default function List({ selectPokemon }: listType) {
+export default function List({ selectPokemon, style }: ListType) {
   const loading: boolean = useSelector(
     (state: PokemonState) => state.pokemons.isLoading,
     shallowEqual,
@@ -53,7 +53,7 @@ export default function List({ selectPokemon }: listType) {
     <FlatList
       // contentOffset={scrollPosition}
       contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-      style={styles.list}
+      style={[styles.list, style]}
       onEndReachedThreshold={0.1}
       onEndReached={handleScroll}
       data={pokemons}
