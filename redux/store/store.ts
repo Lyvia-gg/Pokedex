@@ -12,7 +12,7 @@ export const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      immutableCheck: false, // 👈 désactive le check d’immutabilité
-      serializableCheck: false, // (optionnel) si tu as aussi des erreurs de serializabilité
+      immutableCheck: false,
+      serializableCheck: false,
     }),
 });

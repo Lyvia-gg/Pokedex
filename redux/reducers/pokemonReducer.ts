@@ -24,19 +24,9 @@ const reducer = (state: PokemonState = initialState, action: PokemonAction): Pok
         },
       });
     case actionTypes.SIGN_IN:
-      console.log('blblbl');
       return (state = { ...state, user: { email: action.email } });
     case actionTypes.SIGN_OUT:
-      console.log('pas blblbl');
       return (state = { ...state, user: null });
-    // case actionTypes.REMOVE_POKEMON:
-    //   const updatedPokemons: IPokemon[] = state.pokemons.filter(
-    //     (pokemon) => pokemon.id !== action.pokemon.id,
-    //   );
-    //   return {
-    //     ...state,
-    //     pokemons: updatedPokemons,
-    //   };
     default:
       return state;
   }

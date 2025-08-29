@@ -1,11 +1,21 @@
-import { ScrollView, NativeScrollEvent, PointProp, StyleSheet, Text, View } from 'react-native';
+import {
+  ScrollView,
+  NativeScrollEvent,
+  PointProp,
+  StyleSheet,
+  Text,
+  View,
+  NativeSyntheticEvent,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import Item from './Item';
 import { Dispatch } from '@reduxjs/toolkit';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { getPokedex } from '@/redux/actions/pokemonAction';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import Paging from "";
-
+// import {NativeScrollEvent} from "@CoreEventTypes"
 type listType = {
   // pokemons: readonly IPokemonList[];
   selectPokemon: (id: number) => void;
@@ -21,70 +31,52 @@ export default function List({ selectPokemon }: listType) {
     (state: PokemonState) => state.pokemons.pokemonList,
     shallowEqual,
   );
+  // const [scrollToEnd, setScrollToEnd] = useState(false);
   //   console.log(pokemons);
   const dispatch: Dispatch<any> = useDispatch();
 
-  const isCloseToBottom = ({
-    layoutMeasurement,
-    contentOffset,
-    contentSize,
-  }: NativeScrollEvent) => {
-    return layoutMeasurement.height + contentOffset.y >= contentSize.height;
+  // const isCloseToBottom = ({
+  //   layoutMeasurement,
+  //   contentOffset,
+  //   contentSize,
+  // }: NativeScrollEvent) => {
+  //   console.log(layoutMeasurement.height + contentOffset.y >= contentSize.height - 10);
+  //   return layoutMeasurement.height + contentOffset.y >= contentSize.height - 10;
+  // };
+
+  const handleScroll = () => {
+    console.log('dispatch !');
+    dispatch(getPokedex());
   };
 
   return (
-    <ScrollView
+    <FlatList
       // contentOffset={scrollPosition}
       contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
       style={styles.list}
-      // data={pokemons}
-      //   onEndReached={() => fetchMoreData()}
-      // keyExtractor={(item, index) => index.toString()}
-      // onScrollEndDrag={(nativeEvent) => handleScroll(nativeEvent)}
-      onScroll={({ nativeEvent }) => {
-        if (isCloseToBottom(nativeEvent) && !loading) {
-          setTimeout(() => {
-            console.log('this is the end');
-            dispatch(getPokedex());
-          }, 800);
-        }
-      }}
-      scrollEventThrottle={0}
-      // renderItem={({ item, index }) => (
-      //   <Item
-      //     select={(id: number) => {
-      //       // console.log(id);
-      //       selectPokemon(id);
-      //     }}
-      //     pokemonList={{ ...item, pokedex_id: index + 1 }}
-      //   />
-      // )}
-    >
-      {pokemons.map((pokemon, i) => {
-        return (
-          <Item
-            key={i}
-            select={(id: number) => {
-              // console.log(id);
-              selectPokemon(id);
-            }}
-            pokemonList={{ ...pokemon, pokedex_id: i + 1 }}
-          />
-        );
-      })}
-      {loading && (
-        <View style={{ width: '100%', height: 50, backgroundColor: 'red' }}>
-          <Text>Is loading !!</Text>
+      onEndReachedThreshold={0.1}
+      onEndReached={handleScroll}
+      data={pokemons}
+      ListFooterComponent={
+        <View>
+          <ActivityIndicator size="large" color="#000" />
         </View>
+      }
+      renderItem={({ item, index }) => (
+        <Item
+          key={index}
+          select={(id: number) => {
+            // console.log(id);
+            selectPokemon(id);
+          }}
+          pokemonList={{ ...item, pokedex_id: index + 1 }}
+        />
       )}
-    </ScrollView>
-
-    // npm i --save react-native-swiper@next
-    // <Swiper style={styles.list} horizontal={false} showsButtons={false} loop={true}>
-    //   {pokemons.map((pokemon: IPokemon) => {
-    //     return <Item key={pokemon.pokedex_id} pokemon={pokemon} />;
-    //   })}
-    // </Swiper>
+    />
+    //    <View style={{ width: '100%', height: 50, backgroundColor: 'red' }}>
+    //     <Text>Is loading !!</Text>
+    //   </View>
+    // </ScrollView>
   );
 }
 

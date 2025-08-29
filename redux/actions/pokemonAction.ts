@@ -51,8 +51,6 @@ export function getPokedex() {
     const offset = store.getState().pokemons.nextPage;
     let response = await getPokedexOffsetApi(offset);
     let pokemons: any = await response.json();
-    // const half = Math.ceil(pokemons.length / 4);
-    // const firstPart = pokemons.slice(0, half);
     const action: SetPokemonAction = {
       type: actionTypes.SET_POKEMON,
       pokemons: pokemons.results,
