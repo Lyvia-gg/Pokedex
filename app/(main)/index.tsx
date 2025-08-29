@@ -1,34 +1,20 @@
-import { Image } from 'expo-image';
-import { Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { useSession } from '@/context/AuthContext';
 import { Dispatch } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, shallowEqual, ReactReduxContext } from 'react-redux';
 import { getPokedex, selectPokemon } from '@/redux/actions/pokemonAction';
 import React, { useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import List from '@/components/PokemonList/List';
-import { store } from '@/redux/store/store';
+import bottomScreen from '@/components/PokemonList/List';
 import Details from '@/components/PokemonDetails/Details';
+import ModalFilter from '@/components/ModalFilter';
+import List from '@/components/PokemonList/List';
+import BottomScreen from '@/components/BottomScreen';
 import BottomMenu from '@/components/BottomMenu';
-import { LinearGradient } from 'expo-linear-gradient';
-
-// type Props = {
-//   fetchPokemon: (pokemons: IPokemon | any) => void
-// }
 
 export default function HomeScreen() {
   const { getSession } = useSession();
-  // const [selectedPokemon, setSelectedPokemon] = useState(0);
-  // const { PokemonState } = useSelector(state => state.pokemons);
-  // const pokemons: readonly IPokemon[] = useSelector(
-  //   (state: PokemonState) => state.pokemons,
-  //   shallowEqual,
-  // );
   const pokemons: readonly IPokemonList[] = useSelector(
     (state: PokemonState) => state.pokemons.pokemonList,
     shallowEqual,
@@ -46,7 +32,9 @@ export default function HomeScreen() {
   const dispatch: Dispatch<any> = useDispatch();
 
   useEffect(() => {
-    dispatch(getPokedex());
+    if (pokemons.length === 0) {
+      dispatch(getPokedex());
+    }
     getSession();
     // console.log('dispatch (main)');
     // console.log('state pokemon', pokemons);
@@ -67,31 +55,14 @@ export default function HomeScreen() {
             <Details />
           </View>
         </View>
-        {/* <View style={styles.separation}>
-          <LinearGradient
-            // Background Linear Gradient
-            colors={['transparent', '#000']}
-            end={{ x: 0.5, y: 0.2 }}
-            style={styles.background}
-          />
-          <LinearGradient
-            // Background Linear Gradient
-            colors={['#ffffff96', 'transparent']}
-            style={styles.background}
-          />
-        </View> */}
 
         <View style={styles.mainComponent}>
-          <View style={styles.mainScreen}>
-            {pokemons.length > 0 && (
-              <List
-                // pokemons={pokemons}
-                // selectedPokemon={selectedPokemon}
-                selectPokemon={setSelectedPokemon}
-              ></List>
-            )}
-            <BottomMenu />
-          </View>
+          {/* <View style={styles.mainScreen}> */}
+          {/* <ModalFilter show={true}></ModalFilter> */}
+          {/* {pokemons.length > 0 && <List selectPokemon={setSelectedPokemon}></List>}
+            <BottomMenu /> */}
+          <BottomScreen setSelectedPokemon={setSelectedPokemon} />
+          {/* </View> */}
         </View>
       </View>
     </View>
@@ -125,6 +96,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'flex-start',
     // gap: 10,
+    position: 'relative',
     alignItems: 'center',
     height: '100%',
     borderColor: '#000',
