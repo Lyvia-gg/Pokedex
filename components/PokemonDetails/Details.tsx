@@ -1,5 +1,6 @@
+import { IPokemon, PokemonState } from '@/redux/store/type';
 import { Image } from 'expo-image';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 export default function Details() {
@@ -18,59 +19,14 @@ export default function Details() {
           ></Image>
           <View style={styles.description}>
             <View style={styles.pokemonId}>
-              <Text
-                style={{
-                  textTransform: 'capitalize',
-                  fontFamily: 'retroGaming',
-                  // position: 'absolute',
-                  // top: 5,
-                  // left: 10,
-                  color: '#535353',
-                }}
-              >
-                {selectedPokemon.pokedex_id}
-              </Text>
-              <Text
-                style={{
-                  textTransform: 'capitalize',
-                  fontFamily: 'retroGaming',
-                  color: '#535353',
-                }}
-              >
-                {selectedPokemon.name}
-              </Text>
+              <Text style={styles.text}>{selectedPokemon.pokedex_id}</Text>
+              <Text style={styles.text}>{selectedPokemon.name}</Text>
             </View>
-            <Text
-              style={{
-                fontFamily: 'retroGaming',
-                textAlign: 'center',
-                fontSize: 12,
-                color: '#535353',
-              }}
-            >
-              {selectedPokemon.genera}
-            </Text>
+            <Text style={styles.greatText}>{selectedPokemon.genera}</Text>
             <View style={{ display: 'flex', flexDirection: 'row', marginTop: 5 }}>
-              <Text
-                style={{
-                  textTransform: 'capitalize',
-                  fontFamily: 'retroGaming',
-                  fontSize: 12,
-                  color: '#535353',
-                }}
-              >
-                {selectedPokemon.types[0].type.name}
-              </Text>
+              <Text style={styles.greatText}>{selectedPokemon.types[0].type.name}</Text>
               {selectedPokemon.types[1] && (
-                <Text
-                  style={{
-                    textTransform: 'capitalize',
-                    fontFamily: 'retroGaming',
-                    fontSize: 12,
-                    color: '#535353',
-                    marginLeft: 5,
-                  }}
-                >
+                <Text style={[styles.greatText, { marginLeft: 5 }]}>
                   {selectedPokemon.types[1].type.name}
                 </Text>
               )}
@@ -103,7 +59,6 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     justifyContent: 'space-between',
-    // gap: 30,
     width: '100%',
     paddingTop: 20,
     paddingBottom: 5,
@@ -168,5 +123,18 @@ const styles = StyleSheet.create({
     height: 100,
     width: '100%',
     maxHeight: 100,
+  },
+  text: {
+    textTransform: 'capitalize',
+    fontFamily: 'retroGaming',
+    color: '#535353',
+  },
+  greatText: {
+    textTransform: 'capitalize',
+
+    fontFamily: 'retroGaming',
+    textAlign: 'center',
+    fontSize: 12,
+    color: '#535353',
   },
 });

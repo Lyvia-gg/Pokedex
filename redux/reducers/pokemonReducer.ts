@@ -1,10 +1,10 @@
 import * as actionTypes from '@/redux/store/actionTypes';
-
+import { PokemonAction, PokemonState } from '@/redux/store/type';
 const initialState: PokemonState = {
   pokemons: { isLoading: false, pokemonList: [], nextPage: 0, filters: null },
   selectedPokemon: { isLoading: false, pokedex_id: null, pokemon: null },
   user: null,
-  filters: { isLoading: false, filterList: null },
+  filters: { isLoading: false, filterList: null, filter: null },
 };
 
 const reducer = (state: PokemonState = initialState, action: PokemonAction): PokemonState => {
@@ -49,6 +49,15 @@ const reducer = (state: PokemonState = initialState, action: PokemonAction): Pok
       return (state = {
         ...state,
         filters: { ...state.filters, isLoading: false, filterList: action.filters },
+      });
+    case actionTypes.SET_FILTER:
+      return (state = { ...state, filters: { ...state.filters, filter: action.filter } });
+    case actionTypes.REQUEST_POKEMON_BY_FILTER:
+      return (state = { ...state, pokemons: { ...state.pokemons, isLoading: true } });
+    case actionTypes.RECEIVE_POKEMON_BY_FILTER:
+      return (state = {
+        ...state,
+        pokemons: { ...state.pokemons, isLoading: false, pokemonList: action.pokemons },
       });
     default:
       return state;

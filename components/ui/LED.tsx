@@ -12,7 +12,6 @@ export function LED() {
     const loop = () => {
       if (!isMounted) return;
       const nextValue = Math.random() > 0.1 ? 1 : 0.7;
-      //   const nextValue = Math.random() > 0.1 ? 1 : 0;
       const duration = Math.floor(Math.random() * 100) + 50;
 
       opacity.value = withTiming(nextValue, { duration }, () => {

@@ -1,38 +1,85 @@
 import { getFilters } from '@/redux/actions/pokemonAction';
 import { Dispatch } from '@reduxjs/toolkit';
 import { use, useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 // import BottomMenu from './BottomMenu';
 import DropdownSelect from 'react-native-input-select';
+import SelectComponent from './ui/SelectComponent';
+import { IFiltersList, PokemonState } from '@/redux/store/type';
+// import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
 
 type ModalFilterProps = {
-  style?: object;
+  showStyle?: object;
   showFilter: boolean;
+  setFilterSelection: ({ form, type }: { form: string | null; type: string | null }) => void;
 };
 
-export default function ModalFilter({ style, showFilter }: ModalFilterProps) {
+export default function ModalFilter({
+  showStyle,
+  showFilter,
+  setFilterSelection,
+}: ModalFilterProps) {
   const filters: { isLoading: boolean; filterList: IFiltersList | null } = useSelector(
     (state: PokemonState) => state.filters,
     shallowEqual,
   );
-  const [FormList, setFormList] = useState<any>([]);
+  const [form, setForm] = useState<number | undefined>(undefined);
+  const [type, setType] = useState<number | undefined>(undefined);
+  const [list, setList] = useState<any>({ form: [], type: [] });
   const dispatch: Dispatch<any> = useDispatch();
 
   useEffect(() => {
     if (filters.filterList === null && showFilter) {
       dispatch(getFilters());
     }
-    if (filters.filterList) {
-      filters.filterList.forms.map((form: any) => {
-        setFormList((prevList: []) => [...prevList, { label: form.name, value: form.id }]);
-      });
-    }
   }, [showFilter]);
-  const [item, setItem] = useState<any>('');
+
+  useEffect(() => {
+    if (filters.filterList) {
+      list.form.length == 0 &&
+        filters.filterList.forms.map((form: any, id: number) => {
+          setList(
+            (prevList: {
+              form: { label: string; value: number }[];
+              type: { label: string; value: number }[];
+            }) => {
+              return {
+                ...prevList,
+                form: [...prevList.form, { label: form.name, value: id }],
+              };
+            },
+          );
+        });
+      list.type.length == 0 &&
+        filters.filterList.types.map((type: any, id: number) => {
+          setList(
+            (prevList: {
+              form: { label: string; value: number }[];
+              type: { label: string; value: number }[];
+            }) => {
+              return {
+                ...prevList,
+                type: [...prevList.type, { label: type.name, value: id }],
+              };
+            },
+          );
+        });
+    }
+  }, [filters.filterList]);
 
   return (
-    <View style={[styles.container, style]}>
+    <ScrollView
+      style={[styles.container, showStyle]}
+      contentContainerStyle={{ alignItems: 'center', justifyContent: 'space-between' }}
+    >
       <Text style={{ fontFamily: 'retroGaming', color: '#FFF', fontSize: 20 }}>Filters !</Text>
       {filters.isLoading && filters.filterList === null ? (
         <ActivityIndicator size="large" color="#FFF" />
@@ -43,53 +90,37 @@ export default function ModalFilter({ style, showFilter }: ModalFilterProps) {
             width: '100%',
             display: 'flex',
             alignItems: 'center',
+            marginTop: 20,
+            marginBottom: 30,
           }}
         >
-          <DropdownSelect
-            label=" "
-            placeholder="Select an form..."
-            options={FormList}
-            selectedValue={item}
-            onValueChange={(itemValue: any) => setItem(itemValue)}
-            placeholderStyle={{
-              // color: 'purple',
-              fontSize: 15,
-              fontWeight: '500',
-              fontFamily: 'retroGaming',
-            }}
-            labelStyle={{ color: 'teal', fontSize: 15, fontWeight: '500' }}
-            dropdownHelperTextStyle={{
-              color: 'green',
-              fontWeight: '900',
-            }}
-            modalControls={{
-              modalBackgroundStyle: {
-                backgroundColor: 'rgba(196, 198, 246, 0.5)',
-              },
-            }}
-            // helperText="The placeholder has been styled"
-            checkboxControls={{
-              checkboxSize: 15,
-              checkboxStyle: {
-                backgroundColor: 'purple',
-                borderRadius: 30, // To get a circle - add the checkboxSize and the padding size
-                padding: 5,
-                borderColor: 'red',
-              },
-              checkboxLabelStyle: { color: 'red', fontSize: 20 },
-              checkboxComponent: <View style={styles.radioButton} />,
-            }}
-            selectedItemStyle={{
-              color: 'hotpink',
-              fontWeight: '900',
-            }}
+          <SelectComponent
+            list={list.form}
+            item={form}
+            setItem={setForm}
+            label="Pokemon form"
+            placeholder="Select a form..."
           />
-          {/* <Text style={{ fontFamily: 'retroGaming', color: '#FFF', fontSize: 16 }}>
-            Filter Options
-          </Text> */}
+          <SelectComponent
+            list={list.type}
+            item={type}
+            setItem={setType}
+            label="Pokemon type"
+            placeholder="Select a type..."
+          />
+          <TouchableOpacity
+            onPress={() =>
+              setFilterSelection({
+                form: form !== undefined ? list.form[form].label : null,
+                type: type !== undefined ? list.type[type].label : null,
+              })
+            }
+          >
+            <Text style={styles.button}>Apply Filters</Text>
+          </TouchableOpacity>
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -98,21 +129,15 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     flex: 1,
-    // height:'100%',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     gap: 5,
     backgroundColor: '#2f2f2f',
     padding: 10,
-    // position: 'absolute',
-    // zIndex: 15,
   },
-  radioButton: {
-    width: 20,
-    height: 20,
-    borderRadius: 20 / 2,
-    borderWidth: 3,
-    borderColor: 'white',
-    backgroundColor: 'blue',
+  button: {
+    color: 'white',
+    fontFamily: 'retroGaming',
+    backgroundColor: 'rgba(46, 153, 46, 1)',
+    padding: 10,
+    borderRadius: 10,
   },
 });

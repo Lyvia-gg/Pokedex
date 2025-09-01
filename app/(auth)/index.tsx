@@ -17,6 +17,7 @@ import { signIn as reduxSignIn } from '@/redux/actions/pokemonAction';
 import { Dispatch } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { LED } from '@/components/ui/LED';
+import InputComponent from '@/components/ui/InputComponent';
 export default function Login() {
   const router = useRouter();
   // const logo = require('@/assets/images/logo.png');
@@ -28,22 +29,8 @@ export default function Login() {
   // const [password, onChangePassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const { signIn } = useSession();
-
-  function checkEmail(email: string) {
-    let re =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (re.test(email)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  const ref_input2 = useRef<TextInput | null>(null);
   const dispatch: Dispatch<any> = useDispatch();
-
-  function auth() {
-    // signIn({ email: email, password: password });
-    dispatch(reduxSignIn(email));
-  }
 
   useEffect(() => {
     if (password !== '' && checkEmail(email)) {
@@ -52,11 +39,22 @@ export default function Login() {
       setButtonDisabled(true);
     }
   }, [email, password]);
-  const ref_input2 = useRef<TextInput | null>(null);
+
+  function checkEmail(email: string) {
+    let re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+
+  function auth() {
+    // signIn({ email: email, password: password });
+    dispatch(reduxSignIn(email));
+  }
+
   return (
-    <View style={{ flex: 1, display: 'flex', gap: 60, backgroundColor: '#7b7776' }}>
+    <View style={styles.container}>
       <KeyboardAvoidingView
-        style={styles.container}
+        style={[styles.container, styles.containerKeyBoard]}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <View style={styles.mainComponent}>
@@ -67,76 +65,49 @@ export default function Login() {
             </View>
             <View style={styles.inputView}>
               <Text style={styles.placeholder}>Identifiant</Text>
-              <TextInput
-                testID="inputEmail"
+              <InputComponent
                 value={email}
-                style={styles.input}
+                onChange={onChangeEmail}
                 returnKeyType="next"
-                onSubmitEditing={() => ref_input2.current?.focus()}
-                blurOnSubmit={false}
-                onChangeText={onChangeEmail}
+                submitBehavior="newline"
+                testID="inputEmail"
+                onSubmit={() => ref_input2.current?.focus()}
               />
             </View>
             <View style={styles.inputView}>
               <Text style={styles.placeholder}>Mot de passe</Text>
-              <TextInput
+              <InputComponent
+                returnKeyType="done"
+                submitBehavior="newline"
                 testID="inputPassword"
                 ref={ref_input2}
                 value={password}
-                style={styles.input}
                 secureTextEntry={true}
-                onChangeText={onChangePassword}
-                onSubmitEditing={() => {
-                  auth();
-                }}
+                onChange={onChangePassword}
+                onSubmit={auth}
               />
             </View>
           </View>
-
-          {/* <TouchableOpacity
-            testID="submitButton"
-            disabled={buttonDisabled}
-            style={[
-              styles.button,
-              buttonDisabled ? { backgroundColor: '#cf95b2ff' } : { backgroundColor: '#DB1778' },
-            ]}
-            onPress={() => {
-              signIn({ email: email, password: password });
-            }}
-          >
-            <Text style={{ color: 'white' }}>Se connecter</Text>
-          </TouchableOpacity> */}
         </View>
       </KeyboardAvoidingView>
-      <PokedexButtom buttonDisabled={buttonDisabled} signIn={() => auth()} />
+      <PokedexButtom buttonDisabled={buttonDisabled} signIn={auth} />
     </View>
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    height: '45%',
-    display: 'flex',
+  container: { flex: 1, display: 'flex', gap: 60, backgroundColor: '#7b7776' },
+  containerKeyBoard: {
     alignItems: 'center',
   },
   mainComponent: {
-    // flex: 1,
-    // padding: 40,
     height: '100%',
     flexDirection: 'column',
     backgroundColor: '#3a3a3a',
     borderColor: '#000',
     borderWidth: 2,
-    // borderWidth: 10,
-    // borderTopWidth: 45,
     padding: 10,
     paddingTop: 45,
-    // backgroundColor: '#7b7776',
     width: '90%',
-    // marginTop: 20,
-    // marginBottom: 30,
-    // height: '35%',
-    // paddingBottom: '25%',
     position: 'relative',
   },
   mainScreen: {
@@ -160,7 +131,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignSelf: 'flex-start',
     padding: 10,
-    // position: 'absolute',
     top: 5,
   },
   background: {
@@ -199,7 +169,6 @@ const styles = StyleSheet.create({
     fontFamily: 'retroGaming',
   },
   button: {
-    // backgroundColor: "#DB1778",
     padding: 10,
     paddingLeft: 20,
     paddingRight: 20,

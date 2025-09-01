@@ -1,75 +1,52 @@
-import {
-  ScrollView,
-  NativeScrollEvent,
-  PointProp,
-  StyleSheet,
-  Text,
-  View,
-  NativeSyntheticEvent,
-  FlatList,
-  ActivityIndicator,
-} from 'react-native';
+import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
 import Item from './Item';
 import { Dispatch } from '@reduxjs/toolkit';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { getPokedex } from '@/redux/actions/pokemonAction';
-import { useEffect, useState } from 'react';
-// import Paging from "";
-// import {NativeScrollEvent} from "@CoreEventTypes"
+import { IFilters, IPokemonList, PokemonState } from '@/redux/store/type';
 type ListType = {
   selectPokemon: (id: number) => void;
   style?: object;
-  // selectedPokemon: number;
 };
 
 export default function List({ selectPokemon, style }: ListType) {
-  const loading: boolean = useSelector(
-    (state: PokemonState) => state.pokemons.isLoading,
-    shallowEqual,
-  );
   const pokemons: readonly IPokemonList[] = useSelector(
     (state: PokemonState) => state.pokemons.pokemonList,
     shallowEqual,
   );
-  // const [scrollToEnd, setScrollToEnd] = useState(false);
-  //   console.log(pokemons);
   const dispatch: Dispatch<any> = useDispatch();
 
-  // const isCloseToBottom = ({
-  //   layoutMeasurement,
-  //   contentOffset,
-  //   contentSize,
-  // }: NativeScrollEvent) => {
-  //   console.log(layoutMeasurement.height + contentOffset.y >= contentSize.height - 10);
-  //   return layoutMeasurement.height + contentOffset.y >= contentSize.height - 10;
-  // };
-
   const handleScroll = () => {
+    // TODO ca se déclanche lorsqu'on recup les pokémons au debut.....
     console.log('dispatch !');
     dispatch(getPokedex());
   };
 
   return (
     <FlatList
-      // contentOffset={scrollPosition}
       contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
       style={[styles.list, style]}
       onEndReachedThreshold={0.1}
       onEndReached={handleScroll}
       data={pokemons}
       ListFooterComponent={
-        <View style={{ paddingBottom: 20 }}>
+        <View
+          style={[styles.listFooterComponent, pokemons.length === 0 ? { display: 'none' } : {}]}
+        >
           <ActivityIndicator size="large" color="#000" />
         </View>
       }
       renderItem={({ item, index }) => (
         <Item
           key={index}
-          select={(id: number) => {
-            // console.log(id);
-            selectPokemon(id);
+          select={() => {
+            let idSelect = item.url.split('/')[item.url.split('/').length - 2];
+            selectPokemon(parseInt(idSelect));
           }}
-          pokemonList={{ ...item, pokedex_id: index + 1 }}
+          pokemonList={{
+            ...item,
+            pokedex_id: parseInt(item.url.split('/')[item.url.split('/').length - 2]),
+          }}
         />
       )}
     />
@@ -90,4 +67,5 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     // paddingBottom: 20,
   },
+  listFooterComponent: { paddingBottom: 20 },
 });

@@ -12,6 +12,7 @@ import { useContext, useEffect } from 'react';
 import { SessionProvider, useSession } from '@/context/AuthContext';
 import SplashScreenController from '@/app/splash';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { IUser, PokemonState } from '@/redux/store/type';
 
 export default function Root() {
   return (

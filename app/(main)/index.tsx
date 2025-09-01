@@ -12,19 +12,15 @@ import ModalFilter from '@/components/ModalFilter';
 import List from '@/components/PokemonList/List';
 import BottomScreen from '@/components/BottomScreen';
 import BottomMenu from '@/components/BottomMenu';
+import { IPokemonList, PokemonState } from '@/redux/store/type';
 
 export default function HomeScreen() {
   const pokemons: readonly IPokemonList[] = useSelector(
     (state: PokemonState) => state.pokemons.pokemonList,
     shallowEqual,
   );
-  // const loading: boolean = useSelector(
-  //   (state: PokemonState) => state.pokemons.isLoading,
-  //   shallowEqual,
-  // );
 
   function setSelectedPokemon(id: number) {
-    // console.log('index id', id);
     dispatch(selectPokemon(id));
   }
 
@@ -34,33 +30,20 @@ export default function HomeScreen() {
     if (pokemons.length === 0) {
       dispatch(getPokedex());
     }
-    // console.log('dispatch (main)');
-    // console.log('state pokemon', pokemons);
   }, []);
 
   return (
-    // <ScrollView>
     <View style={styles.container}>
       <View style={styles.separation}></View>
       <View style={styles.pokedex}>
-        <View
-          style={[
-            styles.mainComponent,
-            { paddingTop: 10, paddingBottom: 45, borderBottomWidth: 0 },
-          ]}
-        >
+        <View style={[styles.mainComponent, styles.topComponent]}>
           <View style={styles.mainScreen}>
             <Details />
           </View>
         </View>
 
         <View style={styles.mainComponent}>
-          {/* <View style={styles.mainScreen}> */}
-          {/* <ModalFilter show={true}></ModalFilter> */}
-          {/* {pokemons.length > 0 && <List selectPokemon={setSelectedPokemon}></List>}
-            <BottomMenu /> */}
           <BottomScreen setSelectedPokemon={setSelectedPokemon} />
-          {/* </View> */}
         </View>
       </View>
     </View>
@@ -87,13 +70,12 @@ const styles = StyleSheet.create({
     width: '90%',
     position: 'relative',
   },
+  topComponent: { paddingTop: 10, paddingBottom: 45, borderBottomWidth: 0 },
   mainScreen: {
     backgroundColor: '#21cc96',
-    // flex: 1,
     width: '100%',
     display: 'flex',
     justifyContent: 'flex-start',
-    // gap: 10,
     position: 'relative',
     alignItems: 'center',
     height: '100%',

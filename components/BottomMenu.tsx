@@ -1,4 +1,3 @@
-import { useSession } from '@/context/AuthContext';
 import { signOut } from '@/redux/actions/pokemonAction';
 import { Dispatch } from '@reduxjs/toolkit';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -11,7 +10,6 @@ type BottomMenuType = {
 };
 
 export default function BottomMenu({ setShowFilter, showFilter }: BottomMenuType) {
-  // const { signOut } = useSession();
   const dispatch: Dispatch<any> = useDispatch();
 
   return (

@@ -1,3 +1,4 @@
+import { IPokemonList, PokemonState } from '@/redux/store/type';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -7,18 +8,14 @@ type itemType = {
   select: (id: number) => void;
 };
 export default function Item({ pokemonList, select }: itemType) {
-  // const [selectedPokemon, setSelectedPokemon] = useState(0);
   const selectedPokemon: number | null = useSelector(
     (state: PokemonState) => state.selectedPokemon.pokedex_id,
   );
   function setSelection(id: number) {
-    // setSelectedPokemon(id);
-    // console.log('id pokemon', id);
     select(id);
   }
 
   return (
-    // <View style={styles.container}>
     <TouchableOpacity
       style={[
         styles.container,
@@ -37,7 +34,6 @@ export default function Item({ pokemonList, select }: itemType) {
         ]}
       ></View>
     </TouchableOpacity>
-    // </View>
   );
 }
 

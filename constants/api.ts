@@ -1,7 +1,4 @@
-// import { EXPO_PUBLIC_API_URL } from '@env';
-// const EXPO_PUBLIC_API_URL = 'https://pokeapi.co/api/v2';
 export const getPokedexOffsetApi = async (offset: number): Promise<Response> => {
-  // return fetch('https://pokeapi.co/api/v2/' + genName);
   if (offset) {
     return fetch(process.env.EXPO_PUBLIC_API_URL + '/pokemon?limit=100&offset=' + offset);
   }

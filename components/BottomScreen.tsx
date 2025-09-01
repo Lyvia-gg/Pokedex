@@ -2,8 +2,10 @@ import { StyleSheet, View } from 'react-native';
 import ModalFilter from './ModalFilter';
 import List from './PokemonList/List';
 import BottomMenu from './BottomMenu';
-import { useState } from 'react';
+import { Dispatch, useState } from 'react';
 import { LED } from './ui/LED';
+import { useDispatch } from 'react-redux';
+import { setFilter } from '@/redux/actions/pokemonAction';
 
 type BottomScreenType = {
   setSelectedPokemon: (id: number) => void;
@@ -11,13 +13,21 @@ type BottomScreenType = {
 
 export default function BottomScreen({ setSelectedPokemon }: BottomScreenType) {
   const [showFilter, setShowFilter] = useState<boolean>(false);
+  const dispatch: Dispatch<any> = useDispatch();
+
+  const setFilterSelection = ({ form, type }: { form: string | null; type: string | null }) => {
+    dispatch(setFilter({ form, type }));
+    setShowFilter(false);
+  };
   return (
     <View style={styles.mainScreen}>
       <LED />
-      <ModalFilter showFilter={showFilter} style={!showFilter ? { display: 'none' } : {}} />
+      <ModalFilter
+        setFilterSelection={setFilterSelection}
+        showFilter={showFilter}
+        showStyle={!showFilter ? { display: 'none' } : {}}
+      />
       <List style={showFilter ? { display: 'none' } : {}} selectPokemon={setSelectedPokemon} />
-
-      {/* <BottomScreen pokemons={pokemons} setSelectedPokemon={setSelectedPokemon} /> */}
       <BottomMenu showFilter={showFilter} setShowFilter={(value) => setShowFilter(value)} />
     </View>
   );
@@ -25,11 +35,9 @@ export default function BottomScreen({ setSelectedPokemon }: BottomScreenType) {
 const styles = StyleSheet.create({
   mainScreen: {
     backgroundColor: '#21cc96',
-    // flex: 1,
     width: '100%',
     display: 'flex',
     justifyContent: 'flex-start',
-    // gap: 10,
     position: 'relative',
     alignItems: 'center',
     height: '100%',

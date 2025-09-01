@@ -18,9 +18,6 @@ export default function PokedexButtom({ buttonDisabled, signIn }: ButtonType) {
       }}
     >
       <View style={styles.container}>
-        {/* <TouchableOpacity onPress={() => signOut()} style={[styles.button]}>
-        <Text style={{ fontFamily: 'retroGaming', color: 'red', fontSize: 30 }}>X</Text>
-        </TouchableOpacity> */}
         <TouchableOpacity
           testID="submitButton"
           disabled={buttonDisabled}
@@ -38,7 +35,6 @@ export default function PokedexButtom({ buttonDisabled, signIn }: ButtonType) {
 const styles = StyleSheet.create({
   container: {
     width: '120%',
-    // backgroundColor: '#3a3a3a',
     backgroundColor: '#ea623e',
     borderColor: '#3a3a3a',
     borderTopWidth: 15,
