@@ -70,6 +70,24 @@ interface ReceiveSelectPokemonAction {
   selectedPokemon: IPokemon;
 }
 
+interface RequestFilter {
+  type: 'REQUEST_FILTERS_ELEMENTS';
+}
+interface ReceiveFilter {
+  type: 'RECEIVE_FILTERS_ELEMENTS';
+  filters: IFiltersList;
+}
+
+interface IFilters {
+  type: string;
+  form: string;
+}
+
+interface IFiltersList {
+  types: [];
+  forms: [];
+}
+
 interface IUser {
   email: string;
 }
@@ -80,12 +98,20 @@ type PokemonAction =
   | ReceiveSelectPokemonAction
   | SetPokemonAction
   | SignIn
+  | RequestFilter
+  | ReceiveFilter
   | SignOut;
 
 type PokemonState = {
-  pokemons: { isLoading: boolean; pokemonList: IPokemonList[]; nextPage: number };
+  pokemons: {
+    isLoading: boolean;
+    pokemonList: IPokemonList[];
+    nextPage: number;
+    filters: IFiltersList | null;
+  };
   selectedPokemon: { isLoading: boolean; pokedex_id: number | null; pokemon: IPokemon | null };
   user: IUser | null;
+  filters: { isLoading: boolean; filterList: IFiltersList | null };
 };
 
 type DispatchType = (args: PokemonAction) => PokemonAction;

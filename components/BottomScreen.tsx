@@ -14,7 +14,7 @@ export default function BottomScreen({ setSelectedPokemon }: BottomScreenType) {
   return (
     <View style={styles.mainScreen}>
       <LED />
-      <ModalFilter style={!showFilter ? { display: 'none' } : {}} />
+      <ModalFilter showFilter={showFilter} style={!showFilter ? { display: 'none' } : {}} />
       <List style={showFilter ? { display: 'none' } : {}} selectPokemon={setSelectedPokemon} />
 
       {/* <BottomScreen pokemons={pokemons} setSelectedPokemon={setSelectedPokemon} /> */}

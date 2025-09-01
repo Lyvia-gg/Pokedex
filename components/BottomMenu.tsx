@@ -22,7 +22,7 @@ export default function BottomMenu({ setShowFilter, showFilter }: BottomMenuType
         onPress={() => setShowFilter(true)}
         style={[styles.button, { width: 'auto' }, showFilter ? { display: 'none' } : {}]}
       >
-        <Text style={{ fontFamily: 'retroGaming', color: 'white', fontSize: 20 }}>Filter</Text>
+        <Text style={{ fontFamily: 'retroGaming', color: 'white', fontSize: 20 }}>Filters</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setShowFilter(false)} style={[styles.button, { right: 0 }]}>
         <Text style={{ fontFamily: 'retroGaming', color: 'rgba(7, 115, 238, 1)', fontSize: 35 }}>

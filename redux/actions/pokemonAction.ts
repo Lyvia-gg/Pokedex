@@ -1,6 +1,12 @@
 import { createAction, Dispatch } from '@reduxjs/toolkit';
 import * as actionTypes from '@/redux/store/actionTypes';
-import { getDetailsPokemonApi, getPokedexOffsetApi, getPokemonApi } from '@/constants/api';
+import {
+  getDetailsPokemonApi,
+  getPokedexOffsetApi,
+  getPokemonApi,
+  getPokemonByFormApi,
+  getPokemonByTypeApi,
+} from '@/constants/api';
 import { useDispatch, useSelector, shallowEqual, ReactReduxContext } from 'react-redux';
 import { store } from '@/redux/store/store';
 
@@ -93,5 +99,22 @@ export function selectPokemon(pokedex_id: number) {
     //   selectedPokemon: pokemonSelected[0],
     // };
     // dispatch(action, pokemonSelected);
+  };
+}
+export function getFilters() {
+  return async (dispatch: Dispatch<any>) => {
+    const action: RequestFilter = {
+      type: actionTypes.REQUEST_FILTERS_ELEMENTS,
+    };
+    dispatch(action);
+    let responseForm = await getPokemonByFormApi();
+    let filtersForm: any = await responseForm.json();
+    let responseType = await getPokemonByTypeApi();
+    let filtersType: any = await responseType.json();
+    const actionReceive: ReceiveFilter = {
+      type: actionTypes.RECEIVE_FILTERS_ELEMENTS,
+      filters: { forms: filtersForm.results, types: filtersType.results },
+    };
+    dispatch(actionReceive);
   };
 }

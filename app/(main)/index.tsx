@@ -14,15 +14,14 @@ import BottomScreen from '@/components/BottomScreen';
 import BottomMenu from '@/components/BottomMenu';
 
 export default function HomeScreen() {
-  const { getSession } = useSession();
   const pokemons: readonly IPokemonList[] = useSelector(
     (state: PokemonState) => state.pokemons.pokemonList,
     shallowEqual,
   );
-  const loading: boolean = useSelector(
-    (state: PokemonState) => state.pokemons.isLoading,
-    shallowEqual,
-  );
+  // const loading: boolean = useSelector(
+  //   (state: PokemonState) => state.pokemons.isLoading,
+  //   shallowEqual,
+  // );
 
   function setSelectedPokemon(id: number) {
     // console.log('index id', id);
@@ -35,7 +34,6 @@ export default function HomeScreen() {
     if (pokemons.length === 0) {
       dispatch(getPokedex());
     }
-    getSession();
     // console.log('dispatch (main)');
     // console.log('state pokemon', pokemons);
   }, []);

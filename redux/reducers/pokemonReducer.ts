@@ -1,9 +1,10 @@
 import * as actionTypes from '@/redux/store/actionTypes';
 
 const initialState: PokemonState = {
-  pokemons: { isLoading: false, pokemonList: [], nextPage: 0 },
+  pokemons: { isLoading: false, pokemonList: [], nextPage: 0, filters: null },
   selectedPokemon: { isLoading: false, pokedex_id: null, pokemon: null },
   user: null,
+  filters: { isLoading: false, filterList: null },
 };
 
 const reducer = (state: PokemonState = initialState, action: PokemonAction): PokemonState => {
@@ -32,6 +33,7 @@ const reducer = (state: PokemonState = initialState, action: PokemonAction): Pok
       return (state = {
         ...state,
         pokemons: {
+          ...state.pokemons,
           pokemonList: state.pokemons.pokemonList.concat(action.pokemons),
           isLoading: false,
           nextPage: state.pokemons.nextPage + 100,
@@ -41,6 +43,13 @@ const reducer = (state: PokemonState = initialState, action: PokemonAction): Pok
       return (state = { ...state, user: { email: action.email } });
     case actionTypes.SIGN_OUT:
       return (state = { ...state, user: null });
+    case actionTypes.REQUEST_FILTERS_ELEMENTS:
+      return (state = { ...state, filters: { ...state.filters, isLoading: true } });
+    case actionTypes.RECEIVE_FILTERS_ELEMENTS:
+      return (state = {
+        ...state,
+        filters: { ...state.filters, isLoading: false, filterList: action.filters },
+      });
     default:
       return state;
   }
