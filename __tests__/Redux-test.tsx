@@ -1,6 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import reducer from '@/redux/reducers/pokemonReducer';
-import { getPokedex, selectPokemon, signIn, signOut } from '@/redux/actions/pokemonAction';
+import {
+  getFilters,
+  getPokedex,
+  selectPokemon,
+  setFilter,
+  signIn,
+  signOut,
+} from '@/redux/actions/pokemonAction';
 describe('Redux', () => {
   let store: any;
   let expectedEmail: string;
@@ -32,5 +39,36 @@ describe('Redux', () => {
     const state = store.getState().pokemons.selectedPokemon;
 
     expect(state).not.toBeNull();
+  });
+
+  test('getFilter', async () => {
+    await store.dispatch(getFilters());
+    const state = store.getState().filters.filterList;
+
+    expect(state).not.toBeNull();
+  });
+  test('setFilter : type normal, form null', async () => {
+    await store.dispatch(setFilter({ form: null, type: 'normal' }));
+    const state = store.getState().filters.filter;
+
+    expect(state).not.toBeNull();
+  });
+  test('setFilter : type normal, form quadriped', async () => {
+    await store.dispatch(setFilter({ form: 'quadriped', type: 'normal' }));
+    const state = store.getState().filters.filter;
+
+    expect(state).not.toBeNull();
+  });
+  test('setFilter : type null, form quadriped', async () => {
+    await store.dispatch(setFilter({ form: 'quadriped', type: null }));
+    const state = store.getState().filters.filter;
+
+    expect(state).not.toBeNull();
+  });
+  test('setFilter : type null, form null', async () => {
+    await store.dispatch(setFilter({ form: null, type: null }));
+    const state = store.getState().filters.filter;
+
+    expect(state).toBeNull();
   });
 });
