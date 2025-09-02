@@ -1,5 +1,13 @@
 import { RefObject } from 'react';
-import { ReturnKeyTypeOptions, StyleSheet, SubmitBehavior, TextInput } from 'react-native';
+import {
+  ReturnKeyTypeOptions,
+  StyleSheet,
+  SubmitBehavior,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 type Props = {
   value: string;
@@ -10,6 +18,8 @@ type Props = {
   onSubmit: () => void;
   ref?: RefObject<TextInput | null>;
   secureTextEntry?: boolean;
+  searchBar?: boolean;
+  placeholder?: string;
 };
 
 export default function InputComponent({
@@ -21,29 +31,68 @@ export default function InputComponent({
   onSubmit,
   ref,
   secureTextEntry = false,
+  searchBar = false,
+  placeholder = '',
 }: Props) {
   return (
-    <TextInput
-      testID={testID}
-      value={value}
-      style={styles.input}
-      returnKeyType={returnKeyType}
-      ref={ref}
-      submitBehavior={submitBehavior}
-      onChangeText={onChange}
-      onSubmitEditing={onSubmit}
-      secureTextEntry={secureTextEntry}
-    />
+    <View style={styles.container}>
+      <TextInput
+        testID={testID}
+        value={value}
+        placeholder={placeholder}
+        style={[
+          styles.input,
+          searchBar
+            ? {
+                backgroundColor: 'white',
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
+              }
+            : {},
+        ]}
+        returnKeyType={returnKeyType}
+        ref={ref}
+        submitBehavior={submitBehavior}
+        onChangeText={onChange}
+        onSubmitEditing={onSubmit}
+        secureTextEntry={secureTextEntry}
+      />
+      {searchBar && (
+        <TouchableOpacity onPress={onSubmit} style={styles.button}>
+          <Text style={styles.text}>{'>'}</Text>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 }
 const styles = StyleSheet.create({
-  input: {
+  container: {
     width: '90%',
     margin: 12,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  input: {
+    flex: 1,
     borderWidth: 1,
     padding: 10,
-    borderColor: '#3a3a3a',
     borderRadius: 10,
+    borderColor: '#3a3a3a',
     fontFamily: 'retroGaming',
+  },
+  button: {
+    backgroundColor: '#009c4a',
+    width: 50,
+    height: 50,
+    borderTopEndRadius: 10,
+    borderBottomEndRadius: 10,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontFamily: 'retroGaming',
+    fontSize: 30,
+    color: 'white',
   },
 });

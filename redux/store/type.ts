@@ -58,6 +58,7 @@ export interface ReceiveFilter {
 export interface IFilters {
   type: string | null;
   form: string | null;
+  searchingName: string | null;
 }
 
 export interface SetFilterAction {

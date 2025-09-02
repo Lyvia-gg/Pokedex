@@ -10,6 +10,7 @@ import {
 import { store } from '@/redux/store/store';
 import {
   IFilters,
+  IPokemon,
   ReceiveFilter,
   ReceivePokemonByFilterAction,
   ReceiveSelectPokemonAction,
@@ -105,10 +106,13 @@ export function setFilter(filter: IFilters) {
   return (dispatch: Dispatch<any>) => {
     const action: SetFilterAction = {
       type: actionTypes.SET_FILTER,
-      filter: filter.form == null && filter.type == null ? null : filter,
+      filter:
+        filter.form == null && filter.type == null && filter.searchingName == null ? null : filter,
     };
     dispatch(action);
-    getPokemonByFilter(filter.form == null && filter.type == null ? null : filter)(dispatch);
+    getPokemonByFilter(
+      filter.form == null && filter.type == null && filter.searchingName == null ? null : filter,
+    )(dispatch);
   };
 }
 
@@ -186,6 +190,22 @@ function getPokemonByType(type: any) {
   };
 }
 
+function getPokemonsBySearch(searchingName: string) {
+  return async (dispatch: Dispatch<any>) => {
+    let response = await getPokedexOffsetApi(0, 2000);
+    let pokemons: any = await response.json();
+
+    let pokemonList = pokemons.results.filter((pokemon: { name: string; url: string }) => {
+      return pokemon.name.startsWith(searchingName.toLowerCase());
+    });
+    const action: SetPokemonResetAction = {
+      type: actionTypes.RECEIVE_POKEMON_LIST_RESET,
+      pokemons: pokemonList,
+    };
+    dispatch(action, pokemons);
+  };
+}
+
 function getPokemonByFilter(filter: IFilters | null) {
   return async (dispatch: Dispatch<any>) => {
     const actionGet: RequestPokemonByFilterAction = {
@@ -196,6 +216,8 @@ function getPokemonByFilter(filter: IFilters | null) {
     let type: any = null;
     if (filter == null) {
       resetPokemonList()(dispatch);
+    } else if (filter.searchingName) {
+      getPokemonsBySearch(filter.searchingName)(dispatch);
     } else {
       if (filter.form) {
         let responseForm = await getPokemonByFormApi(filter.form);

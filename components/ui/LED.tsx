@@ -1,40 +1,68 @@
 import { useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withRepeat,
+  withSequence,
+} from 'react-native-reanimated';
 
 export function LED() {
-  const opacity = useSharedValue(1);
-
-  useEffect(() => {
-    //marche pas sur tel... idk why
-    let isMounted = true;
-
-    const loop = () => {
-      if (!isMounted) return;
-      const nextValue = Math.random() > 0.1 ? 1 : 0.7;
-      const duration = Math.floor(Math.random() * 100) + 50;
-
-      opacity.value = withTiming(nextValue, { duration }, () => {
-        setTimeout(loop, Math.floor(Math.random() * 100));
-      });
-    };
-
-    loop();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
+  const opacity = useSharedValue<number>(1);
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
   }));
+  useEffect(() => {
+    opacity.value = withRepeat(
+      withSequence(
+        withTiming(1, {
+          duration: 1500,
+        }),
+        withTiming(1, {
+          duration: 300,
+        }),
+        withTiming(0.7, {
+          duration: 100,
+        }),
+        withTiming(0.7, {
+          duration: 100,
+        }),
+        withTiming(1, {
+          duration: 200,
+        }),
+        withTiming(1, {
+          duration: 200,
+        }),
+        withTiming(0.7, {
+          duration: 150,
+        }),
+        withTiming(1, {
+          duration: 800,
+        }),
+        withTiming(0.7, {
+          duration: 200,
+        }),
+        withTiming(1, {
+          duration: 100,
+        }),
+        withTiming(0.7, {
+          duration: 200,
+        }),
+        withTiming(1, {
+          duration: 200,
+        }),
+      ),
+      -1,
+      false,
+    );
+  }, []);
 
   return (
-    <Animated.View style={styles.container}>
+    <View style={styles.container}>
       <Animated.View style={[styles.LED, animatedStyle]}></Animated.View>
       <Animated.View style={[styles.spark, animatedStyle]}></Animated.View>
-    </Animated.View>
+    </View>
   );
 }
 const styles = StyleSheet.create({

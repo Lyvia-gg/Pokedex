@@ -1,6 +1,7 @@
-export const getPokedexOffsetApi = async (offset: number): Promise<Response> => {
-  if (offset) {
-    return fetch(process.env.EXPO_PUBLIC_API_URL + '/pokemon?limit=100&offset=' + offset);
+export const getPokedexOffsetApi = async (offset: number, limit?: number): Promise<Response> => {
+  if (offset != undefined) {
+    limit = limit ? limit : 100;
+    return fetch(process.env.EXPO_PUBLIC_API_URL + '/pokemon?limit=' + limit + '&offset=' + offset);
   }
   return fetch(process.env.EXPO_PUBLIC_API_URL + '/pokemon?limit=100&offset=0');
 };

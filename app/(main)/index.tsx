@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { Dispatch } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { getPokedex, selectPokemon } from '@/redux/actions/pokemonAction';
@@ -27,7 +27,11 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={[styles.container, styles.containerKeyBoard]}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      {/* <View style={styles.container}> */}
       <View style={styles.separation}></View>
       <View style={styles.pokedex}>
         <View style={[styles.mainComponent, styles.topComponent]}>
@@ -40,7 +44,8 @@ export default function HomeScreen() {
           <BottomScreen setSelectedPokemon={setSelectedPokemon} />
         </View>
       </View>
-    </View>
+      {/* </View> */}
+    </KeyboardAvoidingView>
   );
 }
 
@@ -52,6 +57,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     justifyContent: 'center',
     backgroundColor: '#7b7776',
+  },
+  containerKeyBoard: {
+    alignItems: 'center',
   },
   mainComponent: {
     height: '50%',

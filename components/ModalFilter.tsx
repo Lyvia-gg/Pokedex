@@ -14,12 +14,21 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import DropdownSelect from 'react-native-input-select';
 import SelectComponent from './ui/SelectComponent';
 import { IFiltersList, PokemonState } from '@/redux/store/type';
+import SearchBar from './ui/SearchBar';
 // import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
 
 type ModalFilterProps = {
   showStyle?: object;
   showFilter: boolean;
-  setFilterSelection: ({ form, type }: { form: string | null; type: string | null }) => void;
+  setFilterSelection: ({
+    form,
+    type,
+    searchingName,
+  }: {
+    form: string | null;
+    type: string | null;
+    searchingName: string | null;
+  }) => void;
 };
 
 export default function ModalFilter({
@@ -33,8 +42,14 @@ export default function ModalFilter({
   );
   const [form, setForm] = useState<number | null>(null);
   const [type, setType] = useState<number | null>(null);
+  const [searchPhrase, setSearchPhrase] = useState<string>('');
   const [list, setList] = useState<any>({ form: [], type: [] });
   const dispatch: Dispatch<any> = useDispatch();
+
+  const onSubmit = () => {
+    // TODO faire en sorte que le filtre marche tous ensemble form + type + search
+    setFilterSelection({ form: null, type: null, searchingName: searchPhrase });
+  };
 
   useEffect(() => {
     if (filters.filterList === null && showFilter) {
@@ -80,6 +95,11 @@ export default function ModalFilter({
       contentContainerStyle={{ alignItems: 'center', justifyContent: 'space-between' }}
     >
       <Text style={{ fontFamily: 'retroGaming', color: '#FFF', fontSize: 20 }}>Filters !</Text>
+      <SearchBar
+        searchPhrase={searchPhrase}
+        setSearchPhrase={setSearchPhrase}
+        onSubmit={onSubmit}
+      ></SearchBar>
       {filters.isLoading && filters.filterList === null ? (
         <ActivityIndicator size="large" color="#FFF" />
       ) : (
@@ -116,6 +136,7 @@ export default function ModalFilter({
               setFilterSelection({
                 form: form != null && form != undefined ? list.form[form].label : null,
                 type: type != null && type != undefined ? list.type[type].label : null,
+                searchingName: null,
               });
             }}
           >

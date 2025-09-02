@@ -15,8 +15,16 @@ export default function BottomScreen({ setSelectedPokemon }: BottomScreenType) {
   const [showFilter, setShowFilter] = useState<boolean>(false);
   const dispatch: Dispatch<any> = useDispatch();
 
-  const setFilterSelection = ({ form, type }: { form: string | null; type: string | null }) => {
-    dispatch(setFilter({ form, type }));
+  const setFilterSelection = ({
+    form,
+    type,
+    searchingName,
+  }: {
+    form: string | null;
+    type: string | null;
+    searchingName: string | null;
+  }) => {
+    dispatch(setFilter({ form, type, searchingName }));
     setShowFilter(false);
   };
   return (

@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
+    textTransform: 'capitalize',
   },
   trangleShape: {
     width: 0,
