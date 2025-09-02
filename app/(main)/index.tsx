@@ -1,17 +1,11 @@
 import { StyleSheet } from 'react-native';
-
-import { useSession } from '@/context/AuthContext';
 import { Dispatch } from '@reduxjs/toolkit';
-import { useDispatch, useSelector, shallowEqual, ReactReduxContext } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { getPokedex, selectPokemon } from '@/redux/actions/pokemonAction';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import bottomScreen from '@/components/PokemonList/List';
 import Details from '@/components/PokemonDetails/Details';
-import ModalFilter from '@/components/ModalFilter';
-import List from '@/components/PokemonList/List';
 import BottomScreen from '@/components/BottomScreen';
-import BottomMenu from '@/components/BottomMenu';
 import { IPokemonList, PokemonState } from '@/redux/store/type';
 
 export default function HomeScreen() {
@@ -20,9 +14,9 @@ export default function HomeScreen() {
     shallowEqual,
   );
 
-  function setSelectedPokemon(id: number) {
+  const setSelectedPokemon = (id: number) => {
     dispatch(selectPokemon(id));
-  }
+  };
 
   const dispatch: Dispatch<any> = useDispatch();
 

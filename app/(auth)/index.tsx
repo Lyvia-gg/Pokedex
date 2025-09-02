@@ -1,17 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableOpacity,
-} from 'react-native';
-// import { LinearGradient } from 'expo-linear-gradient';
-import { useSession } from '@/context/AuthContext';
+import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import PokedexButtom from '@/components/PokedexBottom';
 import { signIn as reduxSignIn } from '@/redux/actions/pokemonAction';
 import { Dispatch } from '@reduxjs/toolkit';
@@ -20,15 +9,11 @@ import { LED } from '@/components/ui/LED';
 import InputComponent from '@/components/ui/InputComponent';
 export default function Login() {
   const router = useRouter();
-  // const logo = require('@/assets/images/logo.png');
   const [email, onChangeEmail] = useState('chuck.noris@gmail.com');
   const [password, onChangePassword] = useState(
     "Au commencement, il regarda Arceus crée l'univers",
   );
-  // const [email, onChangeEmail] = useState('');
-  // const [password, onChangePassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const { signIn } = useSession();
   const ref_input2 = useRef<TextInput | null>(null);
   const dispatch: Dispatch<any> = useDispatch();
 
@@ -40,16 +25,15 @@ export default function Login() {
     }
   }, [email, password]);
 
-  function checkEmail(email: string) {
+  const checkEmail = (email: string) => {
     let re =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
-  }
+  };
 
-  function auth() {
-    // signIn({ email: email, password: password });
+  const auth = () => {
     dispatch(reduxSignIn(email));
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -95,7 +79,7 @@ export default function Login() {
   );
 }
 const styles = StyleSheet.create({
-  container: { flex: 1, display: 'flex', gap: 60, backgroundColor: '#7b7776' },
+  container: { flex: 1, display: 'flex', width: '100%', gap: 60, backgroundColor: '#7b7776' },
   containerKeyBoard: {
     alignItems: 'center',
   },

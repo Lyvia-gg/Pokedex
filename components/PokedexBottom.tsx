@@ -1,4 +1,3 @@
-import { useSession } from '@/context/AuthContext';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 type ButtonType = {
   buttonDisabled: boolean;

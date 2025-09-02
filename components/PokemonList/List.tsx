@@ -10,6 +10,7 @@ type ListType = {
 };
 
 export default function List({ selectPokemon, style }: ListType) {
+  const dispatch: Dispatch<any> = useDispatch();
   const pokemons: readonly IPokemonList[] = useSelector(
     (state: PokemonState) => state.pokemons.pokemonList,
     shallowEqual,
@@ -18,7 +19,6 @@ export default function List({ selectPokemon, style }: ListType) {
     (state: PokemonState) => state.filters.filter,
     shallowEqual,
   );
-  const dispatch: Dispatch<any> = useDispatch();
 
   const handleScroll = () => {
     if (filters == null) {

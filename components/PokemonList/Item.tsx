@@ -11,9 +11,9 @@ export default function Item({ pokemonList, select }: itemType) {
   const selectedPokemon: number | null = useSelector(
     (state: PokemonState) => state.selectedPokemon.pokedex_id,
   );
-  function setSelection(id: number) {
+  const setSelection = (id: number) => {
     select(id);
-  }
+  };
 
   return (
     <TouchableOpacity
