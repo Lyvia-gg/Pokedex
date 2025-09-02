@@ -31,8 +31,8 @@ export default function ModalFilter({
     (state: PokemonState) => state.filters,
     shallowEqual,
   );
-  const [form, setForm] = useState<number | undefined>(undefined);
-  const [type, setType] = useState<number | undefined>(undefined);
+  const [form, setForm] = useState<number | null>(null);
+  const [type, setType] = useState<number | null>(null);
   const [list, setList] = useState<any>({ form: [], type: [] });
   const dispatch: Dispatch<any> = useDispatch();
 
@@ -74,7 +74,6 @@ export default function ModalFilter({
         });
     }
   }, [filters.filterList]);
-
   return (
     <ScrollView
       style={[styles.container, showStyle]}
@@ -96,25 +95,29 @@ export default function ModalFilter({
         >
           <SelectComponent
             list={list.form}
-            item={form}
-            setItem={setForm}
+            item={form != null ? form : null}
+            setItem={(value) => {
+              setForm(value);
+            }}
             label="Pokemon form"
             placeholder="Select a form..."
           />
           <SelectComponent
             list={list.type}
-            item={type}
-            setItem={setType}
+            item={type != null ? type : null}
+            setItem={(value) => {
+              setType(value);
+            }}
             label="Pokemon type"
             placeholder="Select a type..."
           />
           <TouchableOpacity
-            onPress={() =>
+            onPress={() => {
               setFilterSelection({
-                form: form !== undefined ? list.form[form].label : null,
-                type: type !== undefined ? list.type[type].label : null,
-              })
-            }
+                form: form != null && form != undefined ? list.form[form].label : null,
+                type: type != null && type != undefined ? list.type[type].label : null,
+              });
+            }}
           >
             <Text style={styles.button}>Apply Filters</Text>
           </TouchableOpacity>

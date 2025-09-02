@@ -20,6 +20,10 @@ export interface SetPokemonAction {
   type: 'RECEIVE_POKEMON_LIST';
   pokemons: IPokemonList[];
 }
+export interface SetPokemonResetAction {
+  type: 'RECEIVE_POKEMON_LIST_RESET';
+  pokemons: IPokemonList[];
+}
 
 export interface SignIn {
   type: 'SIGN_IN';
@@ -58,7 +62,7 @@ export interface IFilters {
 
 export interface SetFilterAction {
   type: 'SET_FILTER';
-  filter: IFilters;
+  filter: IFilters | null;
 }
 export interface IFiltersList {
   types: [];
@@ -89,6 +93,7 @@ export type PokemonAction =
   | SetFilterAction
   | RequestPokemonByFilterAction
   | ReceivePokemonByFilterAction
+  | SetPokemonResetAction
   | SignOut;
 
 export type PokemonState = {

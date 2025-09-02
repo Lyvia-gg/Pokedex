@@ -3,8 +3,8 @@ import DropdownSelect from 'react-native-input-select';
 
 type SelectComponentProps = {
   list: { label: string; value: any }[];
-  item: number | undefined;
-  setItem: (value: number) => void;
+  item: number | null;
+  setItem: (value: number | null) => void;
   placeholder: string;
   label: string;
 };
@@ -21,8 +21,14 @@ export default function SelectComponent({
       label={label}
       placeholder={placeholder}
       options={list}
-      selectedValue={item}
-      onValueChange={(itemValue: any) => setItem(itemValue)}
+      selectedValue={item == null ? undefined : item}
+      onValueChange={(itemValue: any) => {
+        if (itemValue === '') {
+          setItem(null);
+        } else {
+          setItem(itemValue);
+        }
+      }}
       placeholderStyle={{
         color: 'black',
         fontSize: 15,

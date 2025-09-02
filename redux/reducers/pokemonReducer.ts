@@ -39,6 +39,21 @@ const reducer = (state: PokemonState = initialState, action: PokemonAction): Pok
           nextPage: state.pokemons.nextPage + 100,
         },
       });
+    case actionTypes.RECEIVE_POKEMON_LIST_RESET:
+      return (state = {
+        ...state,
+        pokemons: {
+          ...state.pokemons,
+          pokemonList: action.pokemons,
+          isLoading: false,
+          nextPage: 100,
+        },
+        selectedPokemon: {
+          ...state.selectedPokemon,
+          pokedex_id: null,
+          pokemon: null,
+        },
+      });
     case actionTypes.SIGN_IN:
       return (state = { ...state, user: { email: action.email } });
     case actionTypes.SIGN_OUT:
@@ -57,7 +72,17 @@ const reducer = (state: PokemonState = initialState, action: PokemonAction): Pok
     case actionTypes.RECEIVE_POKEMON_BY_FILTER:
       return (state = {
         ...state,
-        pokemons: { ...state.pokemons, isLoading: false, pokemonList: action.pokemons },
+        pokemons: {
+          ...state.pokemons,
+          isLoading: false,
+          pokemonList: action.pokemons,
+          nextPage: 100,
+        },
+        selectedPokemon: {
+          ...state.selectedPokemon,
+          pokedex_id: null,
+          pokemon: null,
+        },
       });
     default:
       return state;

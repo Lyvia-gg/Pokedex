@@ -1,4 +1,4 @@
-import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, FlatList, ActivityIndicator, Text } from 'react-native';
 import Item from './Item';
 import { Dispatch } from '@reduxjs/toolkit';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -14,12 +14,16 @@ export default function List({ selectPokemon, style }: ListType) {
     (state: PokemonState) => state.pokemons.pokemonList,
     shallowEqual,
   );
+  const filters: IFilters | null = useSelector(
+    (state: PokemonState) => state.filters.filter,
+    shallowEqual,
+  );
   const dispatch: Dispatch<any> = useDispatch();
 
   const handleScroll = () => {
-    // TODO ca se déclanche lorsqu'on recup les pokémons au debut.....
-    console.log('dispatch !');
-    dispatch(getPokedex());
+    if (filters == null) {
+      dispatch(getPokedex());
+    }
   };
 
   return (
@@ -30,10 +34,20 @@ export default function List({ selectPokemon, style }: ListType) {
       onEndReached={handleScroll}
       data={pokemons}
       ListFooterComponent={
-        <View
-          style={[styles.listFooterComponent, pokemons.length === 0 ? { display: 'none' } : {}]}
-        >
-          <ActivityIndicator size="large" color="#000" />
+        <View style={[styles.listFooterComponent]}>
+          <ActivityIndicator
+            style={filters != null ? { display: 'none' } : {}}
+            size="large"
+            color="#000"
+          />
+          <Text
+            style={[
+              filters == null || pokemons.length != 0 ? { display: 'none' } : {},
+              styles.text,
+            ]}
+          >
+            No pokemons found
+          </Text>
         </View>
       }
       renderItem={({ item, index }) => (
@@ -67,5 +81,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     // paddingBottom: 20,
   },
-  listFooterComponent: { paddingBottom: 20 },
+  listFooterComponent: { paddingBottom: 20, justifyContent: 'center', alignItems: 'center' },
+  text: {
+    fontFamily: 'retroGaming',
+  },
 });
