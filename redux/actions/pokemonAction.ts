@@ -1,4 +1,4 @@
-import { createAction, Dispatch } from '@reduxjs/toolkit';
+import { Dispatch } from '@reduxjs/toolkit';
 import * as actionTypes from '@/redux/store/actionTypes';
 import {
   getDetailsPokemonApi,
@@ -7,7 +7,6 @@ import {
   getPokemonByFormApi,
   getPokemonByTypeApi,
 } from '@/constants/api';
-import { useDispatch, useSelector, shallowEqual, ReactReduxContext } from 'react-redux';
 import { store } from '@/redux/store/store';
 import {
   IFilters,

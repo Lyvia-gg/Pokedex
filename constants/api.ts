@@ -17,7 +17,7 @@ export const getPokemonByFormApi = async (form?: string): Promise<Response> => {
   if (form) {
     return fetch(process.env.EXPO_PUBLIC_API_URL + '/pokemon-shape/' + form);
   }
-  return fetch(process.env.EXPO_PUBLIC_API_URL + '/pokemon-shape/');
+  return fetch(process.env.EXPO_PUBLIC_API_URL + '/pokemon-shape');
 };
 
 export const getPokemonByTypeApi = async (type?: string): Promise<Response> => {
@@ -25,5 +25,5 @@ export const getPokemonByTypeApi = async (type?: string): Promise<Response> => {
   if (type) {
     return fetch(process.env.EXPO_PUBLIC_API_URL + '/type/' + type);
   }
-  return fetch(process.env.EXPO_PUBLIC_API_URL + '/type/');
+  return fetch(process.env.EXPO_PUBLIC_API_URL + '/type');
 };
