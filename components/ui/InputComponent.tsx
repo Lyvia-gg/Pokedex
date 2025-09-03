@@ -40,13 +40,12 @@ export default function InputComponent({
         testID={testID}
         value={value}
         placeholder={placeholder}
+        placeholderTextColor={'#6d6d6dff'}
         style={[
           styles.input,
           searchBar
             ? {
                 backgroundColor: 'white',
-                borderTopRightRadius: 0,
-                borderBottomRightRadius: 0,
               }
             : {},
         ]}
@@ -57,11 +56,11 @@ export default function InputComponent({
         onSubmitEditing={onSubmit}
         secureTextEntry={secureTextEntry}
       />
-      {searchBar && (
+      {/* {searchBar && (
         <TouchableOpacity onPress={onSubmit} style={styles.button}>
           <Text style={styles.text}>{'>'}</Text>
         </TouchableOpacity>
-      )}
+      )} */}
     </View>
   );
 }

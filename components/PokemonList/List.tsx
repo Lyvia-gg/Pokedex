@@ -54,12 +54,12 @@ export default function List({ selectPokemon, style }: ListType) {
         <Item
           key={index}
           select={() => {
-            let idSelect = item.url.split('/')[item.url.split('/').length - 2];
+            let idSelect = item.url.split('/')[6];
             selectPokemon(parseInt(idSelect));
           }}
           pokemonList={{
             ...item,
-            pokedex_id: parseInt(item.url.split('/')[item.url.split('/').length - 2]),
+            pokedex_id: parseInt(item.url.split('/')[6]),
           }}
         />
       )}

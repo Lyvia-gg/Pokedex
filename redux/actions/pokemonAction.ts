@@ -11,6 +11,7 @@ import { store } from '@/redux/store/store';
 import {
   IFilters,
   IPokemon,
+  IPokemonList,
   ReceiveFilter,
   ReceivePokemonByFilterAction,
   ReceiveSelectPokemonAction,
@@ -107,11 +108,11 @@ export function setFilter(filter: IFilters) {
     const action: SetFilterAction = {
       type: actionTypes.SET_FILTER,
       filter:
-        filter.form == null && filter.type == null && filter.searchingName == null ? null : filter,
+        filter.form == null && filter.type == null && filter.searchingValue == null ? null : filter,
     };
     dispatch(action);
-    getPokemonByFilter(
-      filter.form == null && filter.type == null && filter.searchingName == null ? null : filter,
+    applyFilter(
+      filter.form == null && filter.type == null && filter.searchingValue == null ? null : filter,
     )(dispatch);
   };
 }
@@ -128,85 +129,95 @@ function resetPokemonList() {
   };
 }
 
-function getPokemonByFormAndType({ form, type }: { form: any; type: any }) {
-  // regroupe les pokemons aec les deux critères
-  return (dispatch: Dispatch<any>) => {
-    let typeList = type.pokemon.map((pokemon: any) => {
-      return pokemon.pokemon;
-    });
-    const pokemons = form.pokemon_species.filter((o: any) =>
-      typeList.some(({ name }: { name: string }) => o.name === name),
-    );
-    pokemons.sort((a: receivePokemon, b: receivePokemon) => {
-      const aSplited = a.url.split('/');
-      const bSplited = b.url.split('/');
-      const aId = parseInt(aSplited[aSplited.length - 2]);
-      const bId = parseInt(bSplited[bSplited.length - 2]);
-      return aId - bId;
-    });
+const getPokemonByFormAndType = ({ form, type }: { form: any; type: any }) => {
+  let typeList = type.pokemon.map((pokemon: any) => {
+    return pokemon.pokemon;
+  });
+  const pokemons = form.pokemon_species.filter((o: any) =>
+    typeList.some(({ name }: { name: string }) => o.name === name),
+  );
+  pokemons.sort((a: receivePokemon, b: receivePokemon) => {
+    const aSplited = a.url.split('/');
+    const bSplited = b.url.split('/');
+    const aId = parseInt(aSplited[6]);
+    const bId = parseInt(bSplited[6]);
+    return aId - bId;
+  });
+  return pokemons;
+};
 
-    const action: ReceivePokemonByFilterAction = {
-      type: actionTypes.RECEIVE_POKEMON_BY_FILTER,
-      pokemons: pokemons,
-    };
-    dispatch(action, pokemons);
-  };
-}
+const getPokemonByForm = (form: any) => {
+  let pokemons = form.pokemon_species.sort((a: receivePokemon, b: receivePokemon) => {
+    const aSplited = a.url.split('/');
+    const bSplited = b.url.split('/');
+    const aId = parseInt(aSplited[6]);
+    const bId = parseInt(bSplited[6]);
+    return aId - bId;
+  });
+  return pokemons;
+};
 
-function getPokemonByForm(form: any) {
-  return (dispatch: Dispatch<any>) => {
-    let pokemons = form.pokemon_species.sort((a: receivePokemon, b: receivePokemon) => {
-      const aSplited = a.url.split('/');
-      const bSplited = b.url.split('/');
-      const aId = parseInt(aSplited[aSplited.length - 2]);
-      const bId = parseInt(bSplited[bSplited.length - 2]);
-      return aId - bId;
-    });
-    const action: ReceivePokemonByFilterAction = {
-      type: actionTypes.RECEIVE_POKEMON_BY_FILTER,
-      pokemons: pokemons,
-    };
-    dispatch(action, pokemons);
-  };
-}
+const getPokemonByType = (type: any) => {
+  let typeList = type.pokemon.map((pokemon: any) => {
+    return pokemon.pokemon;
+  });
+  let pokemons = typeList.sort((a: receivePokemon, b: receivePokemon) => {
+    const aSplited = a.url.split('/');
+    const bSplited = b.url.split('/');
+    const aId = parseInt(aSplited[6]);
+    const bId = parseInt(bSplited[6]);
+    return aId - bId;
+  });
+  return pokemons;
+};
 
-function getPokemonByType(type: any) {
-  return (dispatch: Dispatch<any>) => {
-    let typeList = type.pokemon.map((pokemon: any) => {
-      return pokemon.pokemon;
-    });
-    let pokemons = typeList.sort((a: receivePokemon, b: receivePokemon) => {
-      const aSplited = a.url.split('/');
-      const bSplited = b.url.split('/');
-      const aId = parseInt(aSplited[aSplited.length - 2]);
-      const bId = parseInt(bSplited[bSplited.length - 2]);
-      return aId - bId;
-    });
-    const action: ReceivePokemonByFilterAction = {
-      type: actionTypes.RECEIVE_POKEMON_BY_FILTER,
-      pokemons: pokemons,
-    };
-    dispatch(action, pokemons);
-  };
-}
-
-function getPokemonsBySearch(searchingName: string) {
-  return async (dispatch: Dispatch<any>) => {
+const getPokemonsBySearch = async (
+  pokemonsList: IPokemonList[] | null,
+  searchingValue: { text: string; context: 'startAt' | 'all' } | null,
+) => {
+  let pokemons: IPokemonList[];
+  if (!pokemonsList) {
     let response = await getPokedexOffsetApi(0, 2000);
-    let pokemons: any = await response.json();
-
-    let pokemonList = pokemons.results.filter((pokemon: { name: string; url: string }) => {
-      return pokemon.name.startsWith(searchingName.toLowerCase());
+    let pokemonsResponse = await response.json();
+    pokemons = pokemonsResponse.results;
+  } else {
+    pokemons = pokemonsList;
+  }
+  if (searchingValue != null) {
+    let pokemonListSearch = pokemons.filter((pokemon: { name: string; url: string }) => {
+      if (!parseInt(searchingValue.text)) {
+        return pokemon.name.startsWith(searchingValue.text.toLowerCase());
+      } else {
+        let pokedex_id = pokemon.url.split('/')[6];
+        return pokedex_id.startsWith(searchingValue.text);
+      }
     });
-    const action: SetPokemonResetAction = {
-      type: actionTypes.RECEIVE_POKEMON_LIST_RESET,
-      pokemons: pokemonList,
+    return pokemonListSearch;
+  }
+  return pokemons;
+};
+
+const getPokemonByFilter = ({ form, type, searchingValue }: IFilters) => {
+  return async (dispatch: Dispatch<any>) => {
+    let pokemons;
+    if (form && type) {
+      pokemons = await getPokemonByFormAndType({ form, type });
+    } else if (form) {
+      pokemons = await getPokemonByForm(form);
+    } else if (type) {
+      pokemons = await getPokemonByType(type);
+    }
+    pokemons = await getPokemonsBySearch(pokemons, searchingValue);
+    console.log('list pokemon with all filters', pokemons);
+    const action: ReceivePokemonByFilterAction = {
+      type: actionTypes.RECEIVE_POKEMON_BY_FILTER,
+      pokemons: pokemons,
     };
     dispatch(action, pokemons);
   };
-}
+};
 
-function getPokemonByFilter(filter: IFilters | null) {
+const applyFilter = (filter: IFilters | null) => {
   return async (dispatch: Dispatch<any>) => {
     const actionGet: RequestPokemonByFilterAction = {
       type: actionTypes.REQUEST_POKEMON_BY_FILTER,
@@ -216,8 +227,6 @@ function getPokemonByFilter(filter: IFilters | null) {
     let type: any = null;
     if (filter == null) {
       resetPokemonList()(dispatch);
-    } else if (filter.searchingName) {
-      getPokemonsBySearch(filter.searchingName)(dispatch);
     } else {
       if (filter.form) {
         let responseForm = await getPokemonByFormApi(filter.form);
@@ -227,16 +236,10 @@ function getPokemonByFilter(filter: IFilters | null) {
         let responseType = await getPokemonByTypeApi(filter.type);
         type = await responseType.json();
       }
-      if (form && type) {
-        getPokemonByFormAndType({ form, type })(dispatch);
-      } else if (form) {
-        getPokemonByForm(form)(dispatch);
-      } else if (type) {
-        getPokemonByType(type)(dispatch);
-      }
+      getPokemonByFilter({ form, type, searchingValue: filter.searchingValue })(dispatch);
     }
   };
-}
+};
 
 export function getFilters() {
   return async (dispatch: Dispatch<any>) => {

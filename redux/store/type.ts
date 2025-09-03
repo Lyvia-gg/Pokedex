@@ -58,7 +58,7 @@ export interface ReceiveFilter {
 export interface IFilters {
   type: string | null;
   form: string | null;
-  searchingName: string | null;
+  searchingValue: { text: string; context: 'startAt' | 'all' } | null;
 }
 
 export interface SetFilterAction {

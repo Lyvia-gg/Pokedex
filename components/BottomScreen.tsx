@@ -18,13 +18,13 @@ export default function BottomScreen({ setSelectedPokemon }: BottomScreenType) {
   const setFilterSelection = ({
     form,
     type,
-    searchingName,
+    searchingValue,
   }: {
     form: string | null;
     type: string | null;
-    searchingName: string | null;
+    searchingValue: { text: string; context: 'startAt' | 'all' } | null;
   }) => {
-    dispatch(setFilter({ form, type, searchingName }));
+    dispatch(setFilter({ form, type, searchingValue }));
     setShowFilter(false);
   };
   return (

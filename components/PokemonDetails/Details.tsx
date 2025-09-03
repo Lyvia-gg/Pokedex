@@ -7,16 +7,17 @@ export default function Details() {
   const selectedPokemon: IPokemon | null = useSelector(
     (state: PokemonState) => state.selectedPokemon.pokemon,
   );
+  const url =
+    selectedPokemon && selectedPokemon.sprite.regular
+      ? selectedPokemon.sprite.regular
+      : require('@/assets/images/pika.gif');
   const isLoading: boolean = useSelector((state: PokemonState) => state.selectedPokemon.isLoading);
+
   if (selectedPokemon && !isLoading)
     return (
       <View style={styles.container}>
         <View style={[styles.view, styles.topView]}>
-          <Image
-            source={selectedPokemon.sprite.regular}
-            style={styles.pokemonImg}
-            contentFit="contain"
-          ></Image>
+          <Image source={url} style={styles.pokemonImg} contentFit="contain"></Image>
           <View style={styles.description}>
             <View style={styles.pokemonId}>
               <Text style={styles.text}>{selectedPokemon.pokedex_id}</Text>
@@ -105,10 +106,8 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   pokemonView: {
-    //  backgroundColor: 'white',
     display: 'flex',
     justifyContent: 'center',
-    // padding: 10,
     width: '45%',
   },
   pokemonId: {
@@ -122,6 +121,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     height: 100,
     width: '100%',
+    alignSelf: 'center',
     maxHeight: 100,
   },
   text: {

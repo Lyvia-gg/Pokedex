@@ -23,7 +23,7 @@ export default function SelectComponent({
       options={list}
       selectedValue={item == null ? undefined : item}
       onValueChange={(itemValue: any) => {
-        if (itemValue === '') {
+        if (itemValue === '' || itemValue == undefined) {
           setItem(null);
         } else {
           setItem(itemValue);

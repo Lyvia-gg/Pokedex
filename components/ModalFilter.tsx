@@ -23,11 +23,11 @@ type ModalFilterProps = {
   setFilterSelection: ({
     form,
     type,
-    searchingName,
+    searchingValue,
   }: {
     form: string | null;
     type: string | null;
-    searchingName: string | null;
+    searchingValue: { text: string; context: 'startAt' | 'all' } | null;
   }) => void;
 };
 
@@ -42,14 +42,11 @@ export default function ModalFilter({
   );
   const [form, setForm] = useState<number | null>(null);
   const [type, setType] = useState<number | null>(null);
-  const [searchPhrase, setSearchPhrase] = useState<string>('');
+  const [searchPhrase, setSearchPhrase] = useState<string | null>(null);
   const [list, setList] = useState<any>({ form: [], type: [] });
   const dispatch: Dispatch<any> = useDispatch();
 
-  const onSubmit = () => {
-    // TODO faire en sorte que le filtre marche tous ensemble form + type + search
-    setFilterSelection({ form: null, type: null, searchingName: searchPhrase });
-  };
+  const onSubmit = () => {};
 
   useEffect(() => {
     if (filters.filterList === null && showFilter) {
@@ -96,6 +93,8 @@ export default function ModalFilter({
     >
       <Text style={{ fontFamily: 'retroGaming', color: '#FFF', fontSize: 20 }}>Filters !</Text>
       <SearchBar
+        title="Pokemon name or ID"
+        placeholder="Cubone... or 104..."
         searchPhrase={searchPhrase}
         setSearchPhrase={setSearchPhrase}
         onSubmit={onSubmit}
@@ -136,7 +135,7 @@ export default function ModalFilter({
               setFilterSelection({
                 form: form != null && form != undefined ? list.form[form].label : null,
                 type: type != null && type != undefined ? list.type[type].label : null,
-                searchingName: null,
+                searchingValue: searchPhrase ? { text: searchPhrase, context: 'startAt' } : null,
               });
             }}
           >
