@@ -29,7 +29,7 @@ function RootNavigator() {
   }
 
   return (
-    <Stack screenOptions={{ animation: 'fade' }}>
+    <Stack screenOptions={{ animation: 'none' }}>
       <Stack.Protected guard={!!session}>
         <Stack.Screen name="(main)" options={{ headerShown: false }} />
       </Stack.Protected>

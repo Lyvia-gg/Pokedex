@@ -1,15 +1,15 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 type ButtonType = {
   buttonDisabled: boolean;
-  signIn: (x: object) => void;
+  signIn?: (x: object) => void;
 };
 
 export default function PokedexButtom({ buttonDisabled, signIn }: ButtonType) {
   return (
     <View
       style={{
-        flex: 1,
-        height: '45%',
+        height: '50%',
+        paddingTop: 60,
         backgroundColor: '#7b7776',
         display: 'flex',
         justifyContent: 'center',

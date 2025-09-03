@@ -1,38 +1,73 @@
-import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
+import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { Dispatch } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { getPokedex, selectPokemon } from '@/redux/actions/pokemonAction';
+import { getPokedex, selectPokemon, signOut } from '@/redux/actions/pokemonAction';
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import Details from '@/components/PokemonDetails/Details';
 import BottomScreen from '@/components/BottomScreen';
 import { IPokemonList, PokemonState } from '@/redux/store/type';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import PokedexButtom from '@/components/PokedexBottom';
 
 export default function HomeScreen() {
   const pokemons: readonly IPokemonList[] = useSelector(
     (state: PokemonState) => state.pokemons.pokemonList,
     shallowEqual,
   );
-
-  const setSelectedPokemon = (id: number) => {
-    dispatch(selectPokemon(id));
-  };
-
   const dispatch: Dispatch<any> = useDispatch();
+  const windowHeight = Dimensions.get('window').height;
+  const translateBottomScreen = useSharedValue<number>(0);
+  const translatePokeball = useSharedValue<number>(windowHeight / 2 + 1);
 
   useEffect(() => {
     if (pokemons.length === 0) {
-      dispatch(getPokedex());
+      setTimeout(() => {
+        dispatch(getPokedex());
+      }, 1000);
     }
   }, []);
+  const setSelectedPokemon = (id: number) => {
+    dispatch(selectPokemon(id));
+  };
+  const animatedTranslate = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateY: withSpring(translateBottomScreen.value * 2, {
+          stiffness: 900,
+          damping: 120,
+          mass: 4,
+          overshootClamping: false,
+        }),
+      },
+    ],
+  }));
+  const animatedTranslatePokeball = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateY: withSpring(translatePokeball.value * 2, {
+          stiffness: 900,
+          damping: 120,
+          mass: 4,
+          overshootClamping: false,
+        }),
+      },
+    ],
+  }));
+  const onClose = () => {
+    translateBottomScreen.value = -windowHeight / 4 + 1;
+    translatePokeball.value = windowHeight / 4 + 1;
+    setTimeout(() => {
+      dispatch(signOut());
+    }, 700);
+  };
 
   return (
     <KeyboardAvoidingView
       style={[styles.container, styles.containerKeyBoard]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      {/* <View style={styles.container}> */}
-      <View style={styles.separation}></View>
+      <Animated.View style={[styles.separation, animatedTranslate]}></Animated.View>
       <View style={styles.pokedex}>
         <View style={[styles.mainComponent, styles.topComponent]}>
           <View style={styles.mainScreen}>
@@ -40,11 +75,25 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        <View style={styles.mainComponent}>
-          <BottomScreen setSelectedPokemon={setSelectedPokemon} />
-        </View>
+        <Animated.View style={[styles.mainComponent, animatedTranslate]}>
+          <BottomScreen onClose={onClose} setSelectedPokemon={setSelectedPokemon} />
+        </Animated.View>
       </View>
-      {/* </View> */}
+      <Animated.View
+        style={[
+          animatedTranslatePokeball,
+          {
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            // backgroundColor: 'red',
+            position: 'absolute',
+            zIndex: 10,
+          },
+        ]}
+      >
+        <PokedexButtom buttonDisabled={true} />
+      </Animated.View>
     </KeyboardAvoidingView>
   );
 }
@@ -88,8 +137,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     width: '100%',
-    // justifyContent: 'space-evenly',
-    // gap: 10,
     alignItems: 'center',
   },
   separation: {

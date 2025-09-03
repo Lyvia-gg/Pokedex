@@ -7,8 +7,10 @@ import Animated, {
   withRepeat,
   withSequence,
 } from 'react-native-reanimated';
-
-export function LED() {
+type Props = {
+  loading?: boolean;
+};
+export function LED({ loading = false }: Props) {
   const opacity = useSharedValue<number>(1);
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
@@ -60,8 +62,16 @@ export function LED() {
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.LED, animatedStyle]}></Animated.View>
-      <Animated.View style={[styles.spark, animatedStyle]}></Animated.View>
+      <Animated.View
+        style={[styles.LED, loading ? { backgroundColor: '#d36600ff' } : animatedStyle]}
+      ></Animated.View>
+      <Animated.View
+        style={[
+          styles.spark,
+          animatedStyle,
+          loading ? { backgroundColor: '#f7c5a4ff' } : animatedStyle,
+        ]}
+      ></Animated.View>
     </View>
   );
 }

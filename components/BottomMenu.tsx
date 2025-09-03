@@ -1,17 +1,13 @@
-import { signOut } from '@/redux/actions/pokemonAction';
-import { Dispatch } from '@reduxjs/toolkit';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useDispatch } from 'react-redux';
 
 type BottomMenuType = {
   setShowFilter: (value: boolean) => void;
   showFilter: boolean;
+  onClose: () => void;
 };
 
-export default function BottomMenu({ setShowFilter, showFilter }: BottomMenuType) {
-  const dispatch: Dispatch<any> = useDispatch();
-
+export default function BottomMenu({ setShowFilter, showFilter, onClose }: BottomMenuType) {
   return (
     <View style={styles.container}>
       <LinearGradient colors={['transparent', '#000']} style={styles.background} />
@@ -27,7 +23,7 @@ export default function BottomMenu({ setShowFilter, showFilter }: BottomMenuType
           {'<'}
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => dispatch(signOut())} style={[styles.button, { right: 40 }]}>
+      <TouchableOpacity onPress={onClose} style={[styles.button, { right: 40 }]}>
         <Text style={{ fontFamily: 'retroGaming', color: 'red', fontSize: 30 }}>X</Text>
       </TouchableOpacity>
     </View>
