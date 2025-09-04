@@ -69,12 +69,13 @@ export default function HomeScreen() {
     >
       <Animated.View style={[styles.separation, animatedTranslate]}></Animated.View>
       <View style={styles.pokedex}>
+        {/* topScreen */}
         <View style={[styles.mainComponent, styles.topComponent]}>
           <View style={styles.mainScreen}>
             <Details />
           </View>
         </View>
-
+        {/* bottomScreen */}
         <Animated.View style={[styles.mainComponent, animatedTranslate]}>
           <BottomScreen onClose={onClose} setSelectedPokemon={setSelectedPokemon} />
         </Animated.View>
@@ -86,7 +87,6 @@ export default function HomeScreen() {
             flex: 1,
             width: '100%',
             height: '100%',
-            // backgroundColor: 'red',
             position: 'absolute',
             zIndex: 10,
           },
