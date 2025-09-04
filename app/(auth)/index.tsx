@@ -23,10 +23,9 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 export default function Login() {
-  const router = useRouter();
   const [email, onChangeEmail] = useState('chuck.noris@gmail.com');
   const [password, onChangePassword] = useState(
-    "Au commencement, il regarda Arceus crée l'univers",
+    "Au commencement, il regarda Arceus créer l'univers",
   );
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const ref_input2 = useRef<TextInput | null>(null);

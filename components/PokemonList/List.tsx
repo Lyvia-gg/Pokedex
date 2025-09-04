@@ -16,7 +16,7 @@ export default function List({ selectPokemon, style }: ListType) {
     shallowEqual,
   );
   const filters: IFilters | null = useSelector(
-    (state: PokemonState) => state.filters.filter,
+    (state: PokemonState) => state.pokemons.filters,
     shallowEqual,
   );
 

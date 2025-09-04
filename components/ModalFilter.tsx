@@ -13,7 +13,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 // import BottomMenu from './BottomMenu';
 import DropdownSelect from 'react-native-input-select';
 import SelectComponent from './ui/SelectComponent';
-import { IFiltersList, PokemonState } from '@/redux/store/type';
+import { IFiltersList, PokemonState, textFilterEnum } from '@/redux/store/type';
 import SearchBar from './ui/SearchBar';
 // import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
 
@@ -27,7 +27,7 @@ type ModalFilterProps = {
   }: {
     form: string | null;
     type: string | null;
-    searchingValue: { text: string; context: 'startAt' | 'all' } | null;
+    searchingValue: { text: string; context: textFilterEnum } | null;
   }) => void;
 };
 
@@ -43,6 +43,7 @@ export default function ModalFilter({
   const [form, setForm] = useState<number | null>(null);
   const [type, setType] = useState<number | null>(null);
   const [searchPhrase, setSearchPhrase] = useState<string | null>(null);
+  const [textFilterOption, setTextFilterOption] = useState<string | null>(textFilterEnum.startWith);
   const [list, setList] = useState<any>({ form: [], type: [] });
   const dispatch: Dispatch<any> = useDispatch();
 
@@ -99,6 +100,47 @@ export default function ModalFilter({
         setSearchPhrase={setSearchPhrase}
         onSubmit={onSubmit}
       ></SearchBar>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={[
+            styles.buttonFilter,
+            textFilterOption == textFilterEnum.startWith
+              ? styles.buttonFilterSelect
+              : textFilterOption == textFilterEnum.all
+                ? { backgroundColor: 'rgba(67, 92, 67, 1)' }
+                : {},
+          ]}
+          onPress={() => setTextFilterOption(textFilterEnum.startWith)}
+        >
+          <Text style={styles.text}>
+            Start with{textFilterOption == textFilterEnum.startWith ? ' ☑' : ''}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.buttonFilter,
+            textFilterOption == textFilterEnum.endWith
+              ? styles.buttonFilterSelect
+              : textFilterOption == textFilterEnum.all
+                ? { backgroundColor: 'rgba(67, 92, 67, 1)' }
+                : {},
+          ]}
+          onPress={() => setTextFilterOption(textFilterEnum.endWith)}
+        >
+          <Text style={styles.text}>
+            End with{textFilterOption == textFilterEnum.endWith ? ' ☑' : ''}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.buttonFilter,
+            textFilterOption == textFilterEnum.all ? styles.buttonFilterSelect : {},
+          ]}
+          onPress={() => setTextFilterOption(textFilterEnum.all)}
+        >
+          <Text style={styles.text}>All{textFilterOption == textFilterEnum.all ? ' ☑' : ''}</Text>
+        </TouchableOpacity>
+      </View>
       {filters.isLoading && filters.filterList === null ? (
         <ActivityIndicator size="large" color="#FFF" />
       ) : (
@@ -135,7 +177,9 @@ export default function ModalFilter({
               setFilterSelection({
                 form: form != null && form != undefined ? list.form[form].label : null,
                 type: type != null && type != undefined ? list.type[type].label : null,
-                searchingValue: searchPhrase ? { text: searchPhrase, context: 'startAt' } : null,
+                searchingValue: searchPhrase
+                  ? { text: searchPhrase, context: textFilterOption }
+                  : null,
               });
             }}
           >
@@ -156,11 +200,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#2f2f2f',
     padding: 10,
   },
+  text: {
+    fontFamily: 'retroGaming',
+    fontSize: 12,
+    color: 'white',
+  },
   button: {
     color: 'white',
     fontFamily: 'retroGaming',
     backgroundColor: 'rgba(46, 153, 46, 1)',
     padding: 10,
     borderRadius: 10,
+  },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+  },
+  buttonFilter: {
+    backgroundColor: 'rgba(221, 50, 50, 1)',
+    padding: 5,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+  },
+  buttonFilterSelect: {
+    backgroundColor: 'green',
   },
 });

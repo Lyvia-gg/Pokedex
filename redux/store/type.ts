@@ -58,7 +58,7 @@ export interface ReceiveFilter {
 export interface IFilters {
   type: string | null;
   form: string | null;
-  searchingValue: { text: string; context: 'startAt' | 'all' } | null;
+  searchingValue: { text: string; context: textFilterEnum } | null;
 }
 
 export interface SetFilterAction {
@@ -83,6 +83,12 @@ export interface IUser {
   email: string;
 }
 
+export enum textFilterEnum {
+  startWith = 'START_WITH',
+  endWith = 'END_WITH',
+  all = 'ALL',
+}
+
 export type PokemonAction =
   | RequestPokemonAction
   | RequestSelectPokemonAction
@@ -102,11 +108,11 @@ export type PokemonState = {
     isLoading: boolean;
     pokemonList: IPokemonList[];
     nextPage: number;
-    filters: IFiltersList | null;
+    filters: IFilters | null;
   };
   selectedPokemon: { isLoading: boolean; pokedex_id: number | null; pokemon: IPokemon | null };
   user: IUser | null;
-  filters: { isLoading: boolean; filterList: IFiltersList | null; filter: IFilters | null };
+  filters: { isLoading: boolean; filterList: IFiltersList | null };
 };
 
 export type DispatchType = (args: PokemonAction) => PokemonAction;

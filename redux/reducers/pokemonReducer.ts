@@ -4,7 +4,7 @@ const initialState: PokemonState = {
   pokemons: { isLoading: false, pokemonList: [], nextPage: 0, filters: null },
   selectedPokemon: { isLoading: false, pokedex_id: null, pokemon: null },
   user: null,
-  filters: { isLoading: false, filterList: null, filter: null },
+  filters: { isLoading: false, filterList: null },
 };
 
 const reducer = (state: PokemonState = initialState, action: PokemonAction): PokemonState => {
@@ -57,7 +57,13 @@ const reducer = (state: PokemonState = initialState, action: PokemonAction): Pok
     case actionTypes.SIGN_IN:
       return (state = { ...state, user: { email: action.email } });
     case actionTypes.SIGN_OUT:
-      return (state = { ...state, user: null });
+      return (state = {
+        ...state,
+        user: null,
+        pokemons: { ...state.pokemons, pokemonList: [], nextPage: 0, filters: null },
+        selectedPokemon: { ...state.selectedPokemon, pokedex_id: null, pokemon: null },
+        filters: { ...state.filters },
+      });
     case actionTypes.REQUEST_FILTERS_ELEMENTS:
       return (state = { ...state, filters: { ...state.filters, isLoading: true } });
     case actionTypes.RECEIVE_FILTERS_ELEMENTS:
@@ -66,7 +72,7 @@ const reducer = (state: PokemonState = initialState, action: PokemonAction): Pok
         filters: { ...state.filters, isLoading: false, filterList: action.filters },
       });
     case actionTypes.SET_FILTER:
-      return (state = { ...state, filters: { ...state.filters, filter: action.filter } });
+      return (state = { ...state, pokemons: { ...state.pokemons, filters: action.filter } });
     case actionTypes.REQUEST_POKEMON_BY_FILTER:
       return (state = { ...state, pokemons: { ...state.pokemons, isLoading: true } });
     case actionTypes.RECEIVE_POKEMON_BY_FILTER:

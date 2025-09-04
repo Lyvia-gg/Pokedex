@@ -12,6 +12,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { textFilterEnum } from '@/redux/store/type';
 
 type BottomScreenType = {
   setSelectedPokemon: (id: number) => void;
@@ -39,7 +40,7 @@ export default function BottomScreen({ setSelectedPokemon, onClose }: BottomScre
   }: {
     form: string | null;
     type: string | null;
-    searchingValue: { text: string; context: 'startAt' | 'all' } | null;
+    searchingValue: { text: string; context: textFilterEnum } | null;
   }) => {
     dispatch(setFilter({ form, type, searchingValue }));
     setShowFilter(false);

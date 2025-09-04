@@ -24,6 +24,7 @@ import {
   SetPokemonResetAction,
   SignIn,
   SignOut,
+  textFilterEnum,
 } from '../store/type';
 
 type receivePokemon = {
@@ -173,7 +174,7 @@ const getPokemonByType = (type: any) => {
 
 const getPokemonsBySearch = async (
   pokemonsList: IPokemonList[] | null,
-  searchingValue: { text: string; context: 'startAt' | 'all' } | null,
+  searchingValue: { text: string; context: textFilterEnum } | null,
 ) => {
   let pokemons: IPokemonList[];
   if (!pokemonsList) {
@@ -186,10 +187,28 @@ const getPokemonsBySearch = async (
   if (searchingValue != null) {
     let pokemonListSearch = pokemons.filter((pokemon: { name: string; url: string }) => {
       if (!parseInt(searchingValue.text)) {
-        return pokemon.name.startsWith(searchingValue.text.toLowerCase());
+        switch (searchingValue.context) {
+          case textFilterEnum.startWith:
+            return pokemon.name.startsWith(searchingValue.text.toLowerCase());
+
+          case textFilterEnum.endWith:
+            return pokemon.name.endsWith(searchingValue.text.toLowerCase());
+
+          case textFilterEnum.all:
+            return pokemon.name.includes(searchingValue.text.toLowerCase());
+        }
       } else {
         let pokedex_id = pokemon.url.split('/')[6];
-        return pokedex_id.startsWith(searchingValue.text);
+        switch (searchingValue.context) {
+          case textFilterEnum.startWith:
+            return pokedex_id.startsWith(searchingValue.text);
+
+          case textFilterEnum.endWith:
+            return pokedex_id.endsWith(searchingValue.text);
+
+          case textFilterEnum.all:
+            return pokedex_id.includes(searchingValue.text);
+        }
       }
     });
     return pokemonListSearch;
@@ -207,8 +226,8 @@ const getPokemonByFilter = ({ form, type, searchingValue }: IFilters) => {
     } else if (type) {
       pokemons = await getPokemonByType(type);
     }
+    console.log(form, type);
     pokemons = await getPokemonsBySearch(pokemons, searchingValue);
-    console.log('list pokemon with all filters', pokemons);
     const action: ReceivePokemonByFilterAction = {
       type: actionTypes.RECEIVE_POKEMON_BY_FILTER,
       pokemons: pokemons,
