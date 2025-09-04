@@ -2,6 +2,7 @@ import { IPokemon, PokemonState } from '@/redux/store/type';
 import { Image } from 'expo-image';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import TypeItem from '../ui/TypeItem';
 
 export default function Details() {
   const selectedPokemon: IPokemon | null = useSelector(
@@ -24,13 +25,9 @@ export default function Details() {
               <Text style={styles.text}>{selectedPokemon.name}</Text>
             </View>
             <Text style={styles.greatText}>{selectedPokemon.genera}</Text>
-            <View style={{ display: 'flex', flexDirection: 'row', marginTop: 5 }}>
-              <Text style={styles.greatText}>{selectedPokemon.types[0].type.name}</Text>
-              {selectedPokemon.types[1] && (
-                <Text style={[styles.greatText, { marginLeft: 5 }]}>
-                  {selectedPokemon.types[1].type.name}
-                </Text>
-              )}
+            <View style={styles.pokemonType}>
+              <TypeItem type={selectedPokemon.types[0].type.name} />
+              {selectedPokemon.types[1] && <TypeItem type={selectedPokemon.types[1].type.name} />}
             </View>
           </View>
         </View>
@@ -38,7 +35,7 @@ export default function Details() {
           <Text
             style={{
               fontFamily: 'retroGaming',
-              fontSize: 12,
+              fontSize: 11,
               color: 'white',
             }}
           >
@@ -82,7 +79,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     gap: 5,
-    height: '45%',
+    height: '50%',
   },
   BottomView: {
     backgroundColor: '#3a3a3a',
@@ -100,9 +97,11 @@ const styles = StyleSheet.create({
     borderBlockColor: 'black',
     borderWidth: 2,
     padding: 5,
-    width: '50%',
+    width: '55%',
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'flex-start',
+    gap: 5,
     position: 'relative',
   },
   pokemonView: {
@@ -120,7 +119,6 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'contain',
     height: 100,
-    width: '100%',
     alignSelf: 'center',
     maxHeight: 100,
   },
@@ -128,13 +126,15 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
     fontFamily: 'retroGaming',
     color: '#535353',
+    fontSize: 11,
+    textAlign: 'center',
   },
   greatText: {
     textTransform: 'capitalize',
-
     fontFamily: 'retroGaming',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 10,
     color: '#535353',
   },
+  pokemonType: { display: 'flex', flexDirection: 'row', gap: 10, marginTop: 5 },
 });

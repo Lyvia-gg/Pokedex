@@ -62,6 +62,16 @@ export default function BottomScreen({ setSelectedPokemon, onClose }: BottomScre
     ],
   }));
 
+  const switchModal = (value: boolean) => {
+    fadeOutList();
+    setTimeout(() => {
+      setShowFilter(value);
+      setTimeout(() => {
+        fadeInList();
+      }, 400);
+    }, 400);
+  };
+
   const onLoading = () => {
     setTimeout(() => {
       fadeInList();
@@ -88,11 +98,19 @@ export default function BottomScreen({ setSelectedPokemon, onClose }: BottomScre
     <View style={styles.mainScreen}>
       <LED loading={loading} />
       <View style={[styles.mainScreen, { overflow: 'hidden', borderWidth: 0 }]}>
-        <ModalFilter
-          setFilterSelection={setFilterSelection}
-          showFilter={showFilter}
-          showStyle={!showFilter ? { display: 'none' } : {}}
-        />
+        <Animated.View
+          style={[
+            animatedOpacityList,
+            { width: '100%', flex: 1 },
+            !showFilter ? { display: 'none' } : {},
+          ]}
+        >
+          <ModalFilter
+            setFilterSelection={setFilterSelection}
+            showFilter={showFilter}
+            showStyle={!showFilter ? { display: 'none' } : {}}
+          />
+        </Animated.View>
         <Animated.View
           style={[
             animatedOpacityList,
@@ -106,7 +124,7 @@ export default function BottomScreen({ setSelectedPokemon, onClose }: BottomScre
           <BottomMenu
             onClose={onUnload}
             showFilter={showFilter}
-            setShowFilter={(value) => setShowFilter(value)}
+            setShowFilter={(value) => switchModal(value)}
           />
         </Animated.View>
       </View>

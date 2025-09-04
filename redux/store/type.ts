@@ -1,5 +1,5 @@
 export interface ITypesPokemon {
-  type: { name: string; url: string };
+  type: { name: typeEnum; url: string };
 }
 export interface IPokemon {
   name: string;
@@ -87,6 +87,28 @@ export enum textFilterEnum {
   startWith = 'START_WITH',
   endWith = 'END_WITH',
   all = 'ALL',
+}
+export enum typeEnum {
+  normal = 'normal',
+  fighting = 'fighting',
+  flying = 'flying',
+  poison = 'poison',
+  ground = 'ground',
+  rock = 'rock',
+  bug = 'bug',
+  ghost = 'ghost',
+  steel = 'steel',
+  fire = 'fire',
+  water = 'water',
+  grass = 'grass',
+  electric = 'electric',
+  ice = 'ice',
+  dragon = 'dragon',
+  psychic = 'psychic',
+  fairy = 'fairy',
+  dark = 'dark',
+  stellar = 'stellar',
+  unknown = 'unknown',
 }
 
 export type PokemonAction =
