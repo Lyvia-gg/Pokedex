@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    gap: 5,
+    gap: 2,
     backgroundColor: '#2f2f2f',
     paddingHorizontal: 10,
     position: 'static',
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#2f2f2f',
   },
   img: {
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 30,
   },
 });
