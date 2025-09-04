@@ -63,13 +63,15 @@ export default function BottomScreen({ setSelectedPokemon, onClose }: BottomScre
   }));
 
   const switchModal = (value: boolean) => {
-    fadeOutList();
-    setTimeout(() => {
-      setShowFilter(value);
+    if (value != showFilter) {
+      fadeOutList();
       setTimeout(() => {
-        fadeInList();
+        setShowFilter(value);
+        setTimeout(() => {
+          fadeInList();
+        }, 400);
       }, 400);
-    }, 400);
+    }
   };
 
   const onLoading = () => {
