@@ -99,30 +99,22 @@ export default function BottomScreen({ setSelectedPokemon, onClose }: BottomScre
   return (
     <View style={styles.mainScreen}>
       <LED loading={loading} />
-      <View style={[styles.mainScreen, { overflow: 'hidden', borderWidth: 0 }]}>
+      <View style={[styles.mainScreen, styles.mainComponent]}>
         <Animated.View
-          style={[
-            animatedOpacityList,
-            { width: '100%', flex: 1 },
-            !showFilter ? { display: 'none' } : {},
-          ]}
+          style={[animatedOpacityList, styles.animatedView, !showFilter ? styles.disappear : {}]}
         >
           <ModalFilter
             setFilterSelection={setFilterSelection}
             showFilter={showFilter}
-            showStyle={!showFilter ? { display: 'none' } : {}}
+            showStyle={!showFilter ? styles.disappear : {}}
           />
         </Animated.View>
         <Animated.View
-          style={[
-            animatedOpacityList,
-            { flex: 1, width: '100%' },
-            showFilter ? { display: 'none' } : {},
-          ]}
+          style={[animatedOpacityList, styles.animatedView, showFilter ? styles.disappear : {}]}
         >
           <List selectPokemon={setSelectedPokemon} />
         </Animated.View>
-        <Animated.View style={[animatedTranslate, { width: '100%', alignSelf: 'flex-end' }]}>
+        <Animated.View style={[animatedTranslate, styles.animatedMenu]}>
           <BottomMenu
             onClose={onUnload}
             showFilter={showFilter}
@@ -144,6 +136,9 @@ const styles = StyleSheet.create({
     height: '100%',
     borderColor: '#000',
     borderWidth: 2,
-    // overflow: 'hidden',
   },
+  mainComponent: { overflow: 'hidden', borderWidth: 0 },
+  animatedView: { width: '100%', flex: 1 },
+  animatedMenu: { width: '100%', alignSelf: 'flex-end' },
+  disappear: { overflow: 'hidden', borderWidth: 0 },
 });

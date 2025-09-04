@@ -47,8 +47,6 @@ export default function ModalFilter({
   const [list, setList] = useState<any>({ form: [], type: [] });
   const dispatch: Dispatch<any> = useDispatch();
 
-  const onSubmit = () => {};
-
   useEffect(() => {
     if (filters.filterList === null && showFilter) {
       dispatch(getFilters());
@@ -98,7 +96,6 @@ export default function ModalFilter({
         placeholder="Cubone... or 104..."
         searchPhrase={searchPhrase}
         setSearchPhrase={setSearchPhrase}
-        onSubmit={onSubmit}
       ></SearchBar>
       <View style={styles.buttonContainer}>
         <TouchableOpacity

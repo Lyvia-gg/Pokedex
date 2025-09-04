@@ -80,18 +80,7 @@ export default function HomeScreen() {
           <BottomScreen onClose={onClose} setSelectedPokemon={setSelectedPokemon} />
         </Animated.View>
       </View>
-      <Animated.View
-        style={[
-          animatedTranslatePokeball,
-          {
-            flex: 1,
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
-            zIndex: 10,
-          },
-        ]}
-      >
+      <Animated.View style={[animatedTranslatePokeball, styles.animatedPokeball]}>
         <PokedexButtom buttonDisabled={true} />
       </Animated.View>
     </KeyboardAvoidingView>
@@ -173,6 +162,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#DB1778',
     padding: 10,
     borderRadius: 10,
-    // width: '30%',
+  },
+  animatedPokeball: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    zIndex: 10,
   },
 });

@@ -28,7 +28,7 @@ export default function List({ selectPokemon, style }: ListType) {
 
   return (
     <FlatList
-      contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+      contentContainerStyle={styles.flatList}
       style={[styles.list, style]}
       onEndReachedThreshold={0.1}
       onEndReached={handleScroll}
@@ -64,10 +64,6 @@ export default function List({ selectPokemon, style }: ListType) {
         />
       )}
     />
-    //    <View style={{ width: '100%', height: 50, backgroundColor: 'red' }}>
-    //     <Text>Is loading !!</Text>
-    //   </View>
-    // </ScrollView>
   );
 }
 
@@ -79,10 +75,10 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 5,
     paddingTop: 10,
-    // paddingBottom: 20,
   },
   listFooterComponent: { paddingBottom: 20, justifyContent: 'center', alignItems: 'center' },
   text: {
     fontFamily: 'retroGaming',
   },
+  flatList: { flexGrow: 1, justifyContent: 'center' },
 });

@@ -10,7 +10,6 @@ import {
 import { store } from '@/redux/store/store';
 import {
   IFilters,
-  IPokemon,
   IPokemonList,
   ReceiveFilter,
   ReceivePokemonByFilterAction,

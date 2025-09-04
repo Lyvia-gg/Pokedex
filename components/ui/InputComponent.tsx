@@ -1,13 +1,5 @@
 import { RefObject } from 'react';
-import {
-  ReturnKeyTypeOptions,
-  StyleSheet,
-  SubmitBehavior,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ReturnKeyTypeOptions, StyleSheet, SubmitBehavior, TextInput, View } from 'react-native';
 
 type Props = {
   value: string;
@@ -56,11 +48,6 @@ export default function InputComponent({
         onSubmitEditing={onSubmit}
         secureTextEntry={secureTextEntry}
       />
-      {/* {searchBar && (
-        <TouchableOpacity onPress={onSubmit} style={styles.button}>
-          <Text style={styles.text}>{'>'}</Text>
-        </TouchableOpacity>
-      )} */}
     </View>
   );
 }

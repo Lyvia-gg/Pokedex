@@ -6,16 +6,7 @@ type ButtonType = {
 
 export default function PokedexButtom({ buttonDisabled, signIn }: ButtonType) {
   return (
-    <View
-      style={{
-        height: '50%',
-        paddingTop: 60,
-        backgroundColor: '#7b7776',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <View style={styles.mainContainer}>
       <View style={styles.container}>
         <TouchableOpacity
           testID="submitButton"
@@ -75,5 +66,13 @@ const styles = StyleSheet.create({
     marginTop: 45,
     backgroundColor: '#3a3a3a',
     transform: [{ rotate: '45deg' }],
+  },
+  mainContainer: {
+    height: '50%',
+    paddingTop: 60,
+    backgroundColor: '#7b7776',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

@@ -71,9 +71,6 @@ export default function TypeItem({ type }: Props) {
       case typeEnum.unknown:
         setColor('#689a8d');
         break;
-
-      // default:
-      //     break;
     }
   }, []);
 

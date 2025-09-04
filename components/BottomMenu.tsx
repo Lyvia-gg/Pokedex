@@ -16,15 +16,13 @@ export default function BottomMenu({ setShowFilter, showFilter, onClose }: Botto
         onPress={() => setShowFilter(true)}
         style={[styles.button, { width: 'auto' }, showFilter ? { display: 'none' } : {}]}
       >
-        <Text style={{ fontFamily: 'retroGaming', color: 'white', fontSize: 20 }}>Filters</Text>
+        <Text style={styles.filterButton}>Filters</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setShowFilter(false)} style={[styles.button, { right: 0 }]}>
-        <Text style={{ fontFamily: 'retroGaming', color: 'rgba(7, 115, 238, 1)', fontSize: 35 }}>
-          {'<'}
-        </Text>
+        <Text style={styles.returnButton}>{'<'}</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={onClose} style={[styles.button, { right: 40 }]}>
-        <Text style={{ fontFamily: 'retroGaming', color: 'red', fontSize: 30 }}>X</Text>
+        <Text style={styles.closeButton}>X</Text>
       </TouchableOpacity>
     </View>
   );
@@ -43,11 +41,9 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     borderColor: '#000',
     borderTopWidth: 2,
-    // gap: 5,
   },
   button: {
     padding: 10,
-    // borderRadius: 10,
     width: 50,
     position: 'absolute',
     zIndex: 10,
@@ -57,4 +53,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: '100%',
   },
+  returnButton: { fontFamily: 'retroGaming', color: 'rgba(7, 115, 238, 1)', fontSize: 35 },
+  closeButton: { fontFamily: 'retroGaming', color: 'rgba(241, 54, 54, 1)', fontSize: 30 },
+  filterButton: { fontFamily: 'retroGaming', color: 'white', fontSize: 20 },
 });

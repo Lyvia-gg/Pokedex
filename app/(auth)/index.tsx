@@ -115,31 +115,9 @@ export default function Login() {
   };
 
   return (
-    <View
-      style={{
-        backgroundColor: '#7b7776',
-        flex: 1,
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
-      <View
-        style={[
-          styles.mainComponent,
-          {
-            position: 'absolute',
-            width: '90%',
-            height: '50%',
-            zIndex: 0,
-            paddingBottom: 45,
-            paddingTop: 10,
-          },
-        ]}
-      >
-        <View style={[styles.mainScreen, { justifyContent: 'center' }]}>
-          {/* <Image style={[{ height: 150, width: 150, objectFit: 'contain' }]} source={url}></Image> */}
-        </View>
+    <View style={styles.containerTop}>
+      <View style={[styles.mainComponent, styles.componentTop]}>
+        <View style={[styles.mainScreen, { justifyContent: 'center' }]}></View>
       </View>
       <Animated.View style={[styles.container, animatedTranslate]}>
         <KeyboardAvoidingView
@@ -149,33 +127,11 @@ export default function Login() {
           <View style={styles.mainComponent}>
             <View style={styles.mainScreen}>
               <LED loading={loadingScreen} />
-              <Animated.View
-                style={[
-                  animatedOpacityScreen,
-                  {
-                    flex: 1,
-                    width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: 20,
-                  },
-                ]}
-              >
+              <Animated.View style={[animatedOpacityScreen, styles.animatedOpacityScreenContainer]}>
                 <View style={styles.titleContainer}>
                   <Text style={{ fontFamily: 'retroGaming' }}>Sign in</Text>
                 </View>
-                <Animated.View
-                  style={[
-                    animatedOpacityInput,
-                    {
-                      flex: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 10,
-                      paddingTop: 10,
-                    },
-                  ]}
-                >
+                <Animated.View style={[animatedOpacityInput, styles.animatedOpacityContainer]}>
                   {!loadingScreen ? (
                     <>
                       <View style={styles.inputView}>
@@ -204,19 +160,7 @@ export default function Login() {
                       </View>
                     </>
                   ) : (
-                    <View
-                      style={{
-                        flex: 1,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        gap: 10,
-                        position: 'absolute',
-                        alignSelf: 'center',
-                        top: '40%',
-                      }}
-                    >
+                    <View style={styles.loadingView}>
                       <ActivityIndicator color={'black'} size={'large'} />
                       <Text style={{ fontFamily: 'retroGaming' }}>Connecting...</Text>
                     </View>
@@ -236,7 +180,6 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     width: '100%',
-    // gap: 60,
     backgroundColor: '#7b7776',
     borderTopColor: 'black',
     borderTopWidth: 3,
@@ -244,12 +187,10 @@ const styles = StyleSheet.create({
   },
   containerKeyBoard: {
     alignItems: 'center',
-    // marginBottom: 60,
     height: '50%',
   },
   mainComponent: {
     height: '100%',
-    // flex: 1,
     flexDirection: 'column',
     backgroundColor: '#3a3a3a',
     borderColor: '#000',
@@ -264,7 +205,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#21cc96',
     borderColor: '#000',
     borderWidth: 2,
-    // flex: 1,
     width: '100%',
     height: '100%',
     display: 'flex',
@@ -303,5 +243,45 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     borderRadius: 10,
     marginBottom: 10,
+  },
+  animatedOpacityContainer: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+    paddingTop: 10,
+  },
+  loadingView: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 10,
+    position: 'absolute',
+    alignSelf: 'center',
+    top: '40%',
+  },
+  animatedOpacityScreenContainer: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 20,
+  },
+  containerTop: {
+    backgroundColor: '#7b7776',
+    flex: 1,
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  componentTop: {
+    position: 'absolute',
+    width: '90%',
+    height: '50%',
+    zIndex: 0,
+    paddingBottom: 45,
+    paddingTop: 10,
   },
 });

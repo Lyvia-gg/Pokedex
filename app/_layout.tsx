@@ -24,7 +24,6 @@ function RootNavigator() {
   });
 
   if (!loaded) {
-    // Async font loading only occurs in development.
     return null;
   }
 

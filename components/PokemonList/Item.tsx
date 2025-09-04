@@ -1,7 +1,6 @@
 import { IPokemonList, PokemonState } from '@/redux/store/type';
-import { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 type itemType = {
   pokemonList: IPokemonList;
