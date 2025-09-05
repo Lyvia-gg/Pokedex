@@ -225,7 +225,6 @@ const getPokemonByFilter = ({ form, type, searchingValue }: IFilters) => {
     } else if (type) {
       pokemons = await getPokemonByType(type);
     }
-    console.log(form, type);
     pokemons = await getPokemonsBySearch(pokemons, searchingValue);
     const action: ReceivePokemonByFilterAction = {
       type: actionTypes.RECEIVE_POKEMON_BY_FILTER,
