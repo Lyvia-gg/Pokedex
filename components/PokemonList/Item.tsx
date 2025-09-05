@@ -1,6 +1,7 @@
 import { IPokemonList, PokemonState } from '@/redux/store/type';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { Pressable } from 'react-native-gesture-handler';
 
 type itemType = {
   pokemonList: IPokemonList;
@@ -16,20 +17,25 @@ export default function Item({ pokemonList, select }: itemType) {
   const url = require('@/assets/images/icon.png');
 
   return (
-    <View style={[styles.container, { position: 'relative', backgroundColor: '' }]}>
-      <TouchableOpacity
+    <View
+      style={[styles.container, { position: 'relative', backgroundColor: '' }]}
+      removeClippedSubviews={false}
+    >
+      <Pressable
         style={[
           styles.button,
           selectedPokemon == pokemonList.pokedex_id && { backgroundColor: '#4c752c' },
         ]}
-        activeOpacity={1}
-        onPress={() => setSelection(pokemonList.pokedex_id)}
+        // activeOpacity={1}
+        onPress={() => {
+          setSelection(pokemonList.pokedex_id);
+        }}
       >
         <Image style={styles.img} source={url} />
         <Text numberOfLines={1} style={[styles.text, { fontFamily: 'retroGaming' }]}>
           {pokemonList.pokedex_id} - {pokemonList.name}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
       <View
         style={[
           styles.trangleShape,

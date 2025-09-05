@@ -1,21 +1,12 @@
 import { getFilters } from '@/redux/actions/pokemonAction';
 import { Dispatch } from '@reduxjs/toolkit';
 import { use, useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-// import BottomMenu from './BottomMenu';
-import DropdownSelect from 'react-native-input-select';
+import { Pressable, ScrollView } from 'react-native-gesture-handler';
 import SelectComponent from './ui/SelectComponent';
 import { IFiltersList, PokemonState, textFilterEnum } from '@/redux/store/type';
 import SearchBar from './ui/SearchBar';
-// import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
 
 type ModalFilterProps = {
   showStyle?: object;
@@ -43,7 +34,9 @@ export default function ModalFilter({
   const [form, setForm] = useState<number | null>(null);
   const [type, setType] = useState<number | null>(null);
   const [searchPhrase, setSearchPhrase] = useState<string | null>(null);
-  const [textFilterOption, setTextFilterOption] = useState<string | null>(textFilterEnum.startWith);
+  const [textFilterOption, setTextFilterOption] = useState<textFilterEnum>(
+    textFilterEnum.startWith,
+  );
   const [list, setList] = useState<any>({ form: [], type: [] });
   const dispatch: Dispatch<any> = useDispatch();
 
@@ -85,6 +78,11 @@ export default function ModalFilter({
         });
     }
   }, [filters.filterList]);
+
+  const submit = () => {
+    console.log('lblblblblblblblbblbl', Math.random());
+  };
+
   return (
     <ScrollView
       style={[styles.container, showStyle]}
@@ -98,7 +96,7 @@ export default function ModalFilter({
         setSearchPhrase={setSearchPhrase}
       ></SearchBar>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
+        <Pressable
           style={[
             styles.buttonFilter,
             textFilterOption == textFilterEnum.startWith
@@ -112,8 +110,8 @@ export default function ModalFilter({
           <Text style={styles.text}>
             Start with{textFilterOption == textFilterEnum.startWith ? ' ☑' : ''}
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </Pressable>
+        <Pressable
           style={[
             styles.buttonFilter,
             textFilterOption == textFilterEnum.endWith
@@ -127,8 +125,8 @@ export default function ModalFilter({
           <Text style={styles.text}>
             End with{textFilterOption == textFilterEnum.endWith ? ' ☑' : ''}
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </Pressable>
+        <Pressable
           style={[
             styles.buttonFilter,
             textFilterOption == textFilterEnum.all ? styles.buttonFilterSelect : {},
@@ -136,7 +134,7 @@ export default function ModalFilter({
           onPress={() => setTextFilterOption(textFilterEnum.all)}
         >
           <Text style={styles.text}>All{textFilterOption == textFilterEnum.all ? ' ☑' : ''}</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       {filters.isLoading && filters.filterList === null ? (
         <ActivityIndicator size="large" color="#FFF" />
@@ -169,8 +167,10 @@ export default function ModalFilter({
             label="Pokemon type"
             placeholder="Select a type..."
           />
-          <TouchableOpacity
+          <Pressable
+            style={styles.buttonSubmit}
             onPress={() => {
+              console.log('blblb bouton');
               setFilterSelection({
                 form: form != null && form != undefined ? list.form[form].label : null,
                 type: type != null && type != undefined ? list.type[type].label : null,
@@ -181,7 +181,7 @@ export default function ModalFilter({
             }}
           >
             <Text style={styles.button}>Apply Filters</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       )}
     </ScrollView>
@@ -205,6 +205,8 @@ const styles = StyleSheet.create({
   button: {
     color: 'white',
     fontFamily: 'retroGaming',
+  },
+  buttonSubmit: {
     backgroundColor: 'rgba(46, 153, 46, 1)',
     padding: 10,
     borderRadius: 10,
