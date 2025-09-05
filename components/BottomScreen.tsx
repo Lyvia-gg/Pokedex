@@ -43,7 +43,7 @@ export default function BottomScreen({ setSelectedPokemon, onClose }: BottomScre
     searchingValue: { text: string; context: textFilterEnum } | null;
   }) => {
     dispatch(setFilter({ form, type, searchingValue }));
-    setShowFilter(false);
+    switchModal(false);
   };
 
   const animatedOpacityList = useAnimatedStyle(() => ({
@@ -140,5 +140,5 @@ const styles = StyleSheet.create({
   mainComponent: { overflow: 'hidden', borderWidth: 0 },
   animatedView: { width: '100%', flex: 1 },
   animatedMenu: { width: '100%', alignSelf: 'flex-end' },
-  disappear: { overflow: 'hidden', borderWidth: 0 },
+  disappear: { display: 'none' },
 });
