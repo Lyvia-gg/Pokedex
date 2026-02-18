@@ -1,50 +1,58 @@
-# Welcome to your Expo app 👋
+# ✨ Welcome to the Pokedex ! ✨
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Vous cherchez un pokémon ? \
+Pas de panique, ce sublime ✨Pokédex✨ est là pour vous sauver ~~la vie~~ (■v■¬)
 
-## Get started
+## 🗃️ Redux
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+│
+├── pokemons
+    ├── pokemonList     <- La liste des pokemons
+    ├── isLoading
+    ├── nextPage        <- Le décalage pour l'api
+    ├── filter          <- Filtre de recherche
+│
+├── selectedPokemon  <- Le pokemon séléctionné
+    ├── isLoading
+    ├── pokedex_id
+    ├── pokemon
+│
+├── filters          <- Tout les filtres de pokeApi
+    ├── isLoading
+    ├── filterList
+│
+├── user
+    ├── email           <- Email du user, stocké pour la session
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🪜 Architecture
 
-## Learn more
+### Auth
 
-To learn more about developing your project with Expo, look at the following resources:
+Page d'authentification, crée pour fake le concepte d'authentification, car il n'y a absolument aucun token (■-■¬) \
+_Chuck norris est l'utilisateur par défaut haha-_
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Main
 
-## Join the community
+Page représentant le pokédex dans sa globalité.
 
-Join our community of developers creating universal apps.
+`bottomScreen` \
+Ecran "tactile" du pokédex, permettant de séléctionné un pokémon, et appliqué de merveilleux filtres ✨ \
+(il permet aussi de se "déconnecter" du pokédex, et de le "fermer")
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+`topScreen`\
+Ecran de détails, on y retrouve les informations sur le pokémon séléctionné
+
+## 🔎 Filtres
+
+Plusieurs type de filtre permette a l'utilisateur de trouver son bonheur dans le pokédex
+
+`Name or ID`\
+Permet de recherché un pokémon par son nom, où par son id de pokédex
+
+`Forme`\
+L'utilisateur à également l'opportunité merveilleuse de pouvoir rechercher un pokémon via sa forme (s'il la connait attention au piège)
+
+`Type`\
+Pour finir, et en addition avec les autres filtres, la recherche peut se faire avec le type du pokémon !

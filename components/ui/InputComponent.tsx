@@ -1,0 +1,84 @@
+import { RefObject } from 'react';
+import { ReturnKeyTypeOptions, StyleSheet, SubmitBehavior, TextInput, View } from 'react-native';
+
+type Props = {
+  value: string;
+  onChange: (text: string) => void;
+  returnKeyType: ReturnKeyTypeOptions | undefined;
+  submitBehavior?: SubmitBehavior | undefined;
+  testID: string;
+  onSubmit: () => void;
+  ref?: RefObject<TextInput | null>;
+  secureTextEntry?: boolean;
+  searchBar?: boolean;
+  placeholder?: string;
+};
+
+export default function InputComponent({
+  value,
+  onChange,
+  returnKeyType,
+  submitBehavior,
+  testID,
+  onSubmit,
+  ref,
+  secureTextEntry = false,
+  searchBar = false,
+  placeholder = '',
+}: Props) {
+  return (
+    <View style={styles.container}>
+      <TextInput
+        testID={testID}
+        value={value}
+        placeholder={placeholder}
+        placeholderTextColor={'#6d6d6dff'}
+        style={[
+          styles.input,
+          searchBar
+            ? {
+                backgroundColor: 'white',
+              }
+            : {},
+        ]}
+        returnKeyType={returnKeyType}
+        ref={ref}
+        submitBehavior={submitBehavior}
+        onChangeText={onChange}
+        onSubmitEditing={onSubmit}
+        secureTextEntry={secureTextEntry}
+      />
+    </View>
+  );
+}
+const styles = StyleSheet.create({
+  container: {
+    width: '90%',
+    margin: 12,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 10,
+    borderColor: '#3a3a3a',
+    fontFamily: 'retroGaming',
+  },
+  button: {
+    backgroundColor: '#009c4a',
+    width: 50,
+    height: 50,
+    borderTopEndRadius: 10,
+    borderBottomEndRadius: 10,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontFamily: 'retroGaming',
+    fontSize: 30,
+    color: 'white',
+  },
+});
